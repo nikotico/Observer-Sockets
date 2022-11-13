@@ -4,6 +4,8 @@
  */
 package Subasta.Objetos;
 
+import Subasta.Cliente.Cliente;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.ImageIcon;
 
@@ -12,8 +14,22 @@ import javax.swing.ImageIcon;
  * @author oscfr
  */
 public class Subastador extends Usuario{
-    public Subastador(String nick) {
-        this.nick = nick;
+    public Subastador(String nick, Cliente c) {
+        this.setNick(nick);
+        this.setC(c);
+    }
+    ArrayList<Subasta> MisSubastas = new ArrayList<Subasta>();
+
+    public ArrayList<Subasta> getMisSubastas() {
+        return MisSubastas;
+    }
+
+    public void setMisSubastas(ArrayList<Subasta> MisSubastas) {
+        this.MisSubastas = MisSubastas;
+    }
+    
+    public void addMisSubastas(Subasta subasta){
+        this.MisSubastas.add(subasta);
     }
     
     void colocarProducto (String nombre, String descripcion, ImageIcon imagen, int PrecioIni, int PrecioFinal, Date fechaProg){

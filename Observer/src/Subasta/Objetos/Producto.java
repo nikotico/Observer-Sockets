@@ -19,6 +19,22 @@ public class Producto {
     int PreciFinal;
     Date fecha;
 
+    public int getPrecioIni() {
+        return PrecioIni;
+    }
+
+    public void setPrecioIni(int PrecioIni) {
+        this.PrecioIni = PrecioIni;
+    }
+
+    public int getPreciFinal() {
+        return PreciFinal;
+    }
+
+    public void setPreciFinal(int PreciFinal) {
+        this.PreciFinal = PreciFinal;
+    }
+
     public Producto(String nombre, String descripcion, ImageIcon imagen, int PrecioIni, int PreciFinal,Date fecha) {
         this.nombre = nombre;
         this.descripcion = descripcion;

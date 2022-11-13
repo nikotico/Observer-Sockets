@@ -4,13 +4,16 @@
  */
 package Subasta.Objetos;
 
+import Subasta.Cliente.Cliente;
+
 /**
  *
  * @author oscfr
  */
 public class Oferente extends Usuario{
-    public Oferente(String nick) {
-        this.nick = nick;
+    public Oferente(String nick, Cliente c) {
+        this.setNick(nick);
+        this.setC(c);
     }
     void ingresarSubasta (Subasta subasta){}
     void ofertar (float oferta,Subasta subasta){};

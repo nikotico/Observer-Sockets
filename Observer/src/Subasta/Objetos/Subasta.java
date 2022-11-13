@@ -13,9 +13,6 @@ import javax.swing.ImageIcon;
  * @author oscfr
  */
 public class Subasta {
-    String nombre;
-    String descripcion;
-    ImageIcon imagen;
     Producto producto;
     Date inicio;
     Date finalProg;
@@ -32,12 +29,33 @@ public class Subasta {
     
     
     void addOferente (Oferente oferente){
-        Hashoferentes.put(0,oferente);
+        Hashoferentes.put(Hashoferentes.size()+1,oferente);
     };
-    void updateOferente (Oferente oferente, float oferta){};
+    void updateOferente (Oferente oferente, float oferta){
+        //Hashoferentes.get(oferente).
+    };
+    
 
-    public Subasta(String nombre, String descripcion) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
+    public Subasta(Producto producto, Date inicio, Date finalProg) {
+        this.producto = producto;
+        this.inicio = inicio;
+        this.finalProg = finalProg;
     }
+
+    public Date getInicio() {
+        return inicio;
+    }
+
+    public void setInicio(Date inicio) {
+        this.inicio = inicio;
+    }
+
+    public Date getFinalProg() {
+        return finalProg;
+    }
+
+    public void setFinalProg(Date finalProg) {
+        this.finalProg = finalProg;
+    }
+
 }

@@ -7,7 +7,10 @@ package Subasta.JFrames;
 
 
 import Subasta.Cliente.Cliente;
+import Subasta.Objetos.Oferente;
+import Subasta.Objetos.Subastador;
 import Utils.ID;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -91,20 +94,20 @@ public class JFrameIniciarSesion extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Iniciar Seción");
+        jLabel1.setText("Iniciar Sesión");
 
         consola.setColumns(20);
         consola.setRows(5);
         jScrollPane1.setViewportView(consola);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Enter");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        lblName.setText("jLabel2");
+        lblName.setText("Nombre");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,29 +115,30 @@ public class JFrameIniciarSesion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
+                .addComponent(BtnOferente, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BtnSubastador, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addComponent(txfEscribirConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(38, 38, 38)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton1)
-                        .addContainerGap(67, Short.MAX_VALUE))
+                        .addContainerGap(85, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BtnOferente, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(BtnSubastador, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(33, 33, 33))))
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addComponent(lblName)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(210, 210, 210)
+                .addComponent(lblName)
+                .addContainerGap(207, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(190, 190, 190))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,30 +149,52 @@ public class JFrameIniciarSesion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnOferente, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnSubastador, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txfEscribirConsola, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
                 .addComponent(lblName)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnOferenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnOferenteActionPerformed
-        this.setVisible(false);
-        JFrameOferente oferente = new JFrameOferente();
-        oferente.setVisible(true);
+        if (lblName.getText()!="Nombre"){
+            this.dispose();
+            Oferente oferente = new Oferente(lblName.getText(),c);
+            JFrameOferente Joferente = new JFrameOferente();
+            oferente.getC().setPantalla(Joferente);
+            Joferente.setOferente(oferente);
+            Joferente.setNombre(lblName.getText());
+            Joferente.setVisible(true);
+            Joferente.setTitle(lblName.getText());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Inserte un nick!!!");
+        }
+        
     }//GEN-LAST:event_BtnOferenteActionPerformed
 
     private void BtnSubastadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSubastadorActionPerformed
-        this.setVisible(false);
-        JFrameSubastador Subastador = new JFrameSubastador();
-        Subastador.setVisible(true);
+        if (lblName.getText()!="Nombre"){
+            this.dispose();
+            Subastador subastador = new Subastador(lblName.getText(),c);
+            JFrameSubastador Jsubastador = new JFrameSubastador();
+            subastador.getC().setPantalla(Jsubastador);
+            Jsubastador.setSubastador(subastador);
+            Jsubastador.setNombre(lblName.getText());
+            Jsubastador.setVisible(true);
+            Jsubastador.setTitle(lblName.getText());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Inserte un nick!!!");
+        }
+        
     }//GEN-LAST:event_BtnSubastadorActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

@@ -4,6 +4,8 @@
  */
 package Subasta;
 
+import Cliente.Cliente;
+import Interface.MainInterface;
 import Subasta.JFrames.JFrameSubasta;
 
 
@@ -17,9 +19,17 @@ public class MainSub {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFrameSubasta subastaF = new JFrameSubasta();
-        //Servidor server = new Servidor(subastaF);
-        subastaF.setVisible(true);
+        
+        //Crea el cliente
+        Cliente c = new Cliente();
+
+        //Muestra la pantalla de jugador
+        MainInterface pJ = new MainInterface(c);
+        pJ.setVisible(true);
+
+        //Coloca la ref a la pantalla en el cliente y lo conecta
+        c.setPantalla(pJ);
+        c.conectar();
     }
     
 }

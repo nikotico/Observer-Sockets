@@ -4,6 +4,8 @@
  */
 package Subasta.Objetos;
 
+import Utils.IObservable;
+import Utils.IObserver;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.ImageIcon;
@@ -12,7 +14,7 @@ import javax.swing.ImageIcon;
  *
  * @author oscfr
  */
-public class SubastasManager {
+public class SubastasManager implements IObservable{
     ArrayList<Subasta> ListaSubastas = new ArrayList<Subasta>();
     
     void agregarSubastador(String nombre, String descripcion, ImageIcon imagen, Subastador subastador, Producto producto, Date finalProg){}
@@ -20,7 +22,21 @@ public class SubastasManager {
     void cerrarOferta(Subasta subasta){}
     void cancelarOferta(Subasta subasta){}
     void enviarNotificacion(String notificacion, Oferente oferente){}
-    void ingresarOferente(Oferente oferente, Subasta subasta){}
     void ofertarProducto(Oferente oferente, float oferta, Subasta subasta){}
+
+    @Override
+    public void addObserver(IObserver io) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void removeObserver(IObserver io) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void notifyAllObservers(String string, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

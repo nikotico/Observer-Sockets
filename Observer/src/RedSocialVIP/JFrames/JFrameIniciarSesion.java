@@ -48,7 +48,7 @@ public class JFrameIniciarSesion extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Iniciar Seción");
+        jLabel1.setText("Iniciar Sesión");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -101,9 +101,9 @@ public class ThreadServidor extends Thread {
                 id = (ID)readerObj.readObject(); // esperar hasta que reciba un entero
                 switch (id){
                     case SETNAME:
-                        String nombreCivilizacion = readerNormal.readUTF();
-                        this.nombre = nombreCivilizacion;
-                        server.mensajeBitacora("Hay una nueva civilazacion: "+nombreCivilizacion+"\n");
+                        String nombre = readerNormal.readUTF();
+                        this.nombre = nombre;
+                        server.mensajeBitacora("Nuevo USuario: "+nombre+"\n");
                     break;
                     case CHAT:
                         mensajeChat = readerNormal.readUTF();
@@ -113,6 +113,12 @@ public class ThreadServidor extends Thread {
                     case BITACORA:
                         String mensajeBitacora = readerNormal.readUTF();
                         server.mensajeBitacora(mensajeBitacora);
+                    break;
+                    case SUBASTA:
+                        mensajeChat = readerNormal.readUTF();
+                        enviar = "Mensaje >> "+":"+mensajeChat;
+                        //Object object = readerObj.readObject();
+                        server.SendInfoAll(enviar,ID.SUBASTA);
                     break;
                 }
             } catch (IOException ex) { 

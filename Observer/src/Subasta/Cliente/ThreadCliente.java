@@ -8,6 +8,9 @@ package Subasta.Cliente;
 import Utils.ID;
 import Interface.MainInterface;
 import Subasta.JFrames.JFrameIniciarSesion;
+import Subasta.JFrames.JFrameOferente;
+import Subasta.JFrames.JFrameSubastador;
+import Subasta.Objetos.Subasta;
 import Utils.IObservable;
 import Utils.IObserver;
 import java.io.DataInputStream;
@@ -36,6 +39,14 @@ public class ThreadCliente extends Thread{
     //Funcionamiento del thread
     private boolean running = true;
     private JFrame refPantalla;
+
+    public JFrame getRefPantalla() {
+        return refPantalla;
+    }
+
+    public void setRefPantalla(JFrame refPantalla) {
+        this.refPantalla = refPantalla;
+    }
     
     //CONSTRUCTOR
     public ThreadCliente(Socket socketRef, JFrame refPantalla, Cliente c) throws IOException {
@@ -73,6 +84,14 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(iobserver);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void escribir(Object object){
+        //envía la instrucción indicada
+        try {
+            writerObj.writeObject(object);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -148,8 +167,14 @@ public class ThreadCliente extends Thread{
                         mensajeChat = readerNormal.readUTF();
                         ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
                     break;
-                    case TEST:
-                        System.out.println("soy un test");
+                    case SUBASTA:
+                        mensajeChat = readerNormal.readUTF();
+                        if (c.getRefPantalla() instanceof JFrameSubastador){
+                            ((JFrameSubastador)c.getRefPantalla()).appendASub(mensajeChat);
+                        }
+                        else{
+                            ((JFrameOferente)c.getRefPantalla()).appendASub(mensajeChat);
+                        }
                     break;
 
                 }
