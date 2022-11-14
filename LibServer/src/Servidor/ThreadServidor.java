@@ -3,6 +3,7 @@ package Servidor;
 
 import Utils.ID;
 import Cliente.ThreadCliente;
+import Utils.AbstractObservable;
 import Utils.IObservable;
 import Utils.IObserver;
 import java.io.DataInputStream;
@@ -24,8 +25,6 @@ public class ThreadServidor extends Thread {
     //Funcionamiento del hilo
     private boolean running = true;
     private Servidor server;
-    
-    public String nombre = "";
 
     //CONSTRUCTOR
     public ThreadServidor(Socket socketRef, Servidor server) throws IOException {
@@ -102,8 +101,7 @@ public class ThreadServidor extends Thread {
                 switch (id){
                     case SETNAME:
                         String nombre = readerNormal.readUTF();
-                        this.nombre = nombre;
-                        server.mensajeBitacora("Nuevo USuario: "+nombre+"\n");
+                        server.AddUser(nombre);
                     break;
                     case CHAT:
                         mensajeChat = readerNormal.readUTF();
@@ -114,12 +112,22 @@ public class ThreadServidor extends Thread {
                         String mensajeBitacora = readerNormal.readUTF();
                         server.mensajeBitacora(mensajeBitacora);
                     break;
+                    case SETSUBASTA:
+                        AbstractObservable subasta = (AbstractObservable)readerObj.readObject();
+                        System.out.println("Llego" + subasta);
+                        nombre = readerNormal.readUTF();
+                        server.AddSubasta(subasta);
+                        server.SendkeySubasta(nombre,ID.SETSUBASTA);
+                        server.SendSubastaToOfer(ID.SUBASTA);
+                    break;
                     case SUBASTA:
-                        mensajeChat = readerNormal.readUTF();
-                        enviar = "Mensaje >> "+":"+mensajeChat;
-                        //Object object = readerObj.readObject();
+                        subasta = (AbstractObservable)readerObj.readObject();
+                        System.out.println("La subasta llego al server");
+                        enviar = "Servidor dice >> "+": Hay una nueva subasta";
+                        server.AddSubasta(subasta);
                         server.SendInfoAll(enviar,ID.SUBASTA);
                     break;
+
                 }
             } catch (IOException ex) { 
                 System.out.println("ERROR EN EL TREADSERVIDOR"); //lo desconecta para que no salga este mensaje infinitas veces

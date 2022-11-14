@@ -3,33 +3,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package Subasta;
-
-import Cliente.Cliente;
-import Interface.MainInterface;
-import Subasta.JFrames.JFrameSubasta;
+import Subasta.JFrames.JFrameIniciarSesion;
 
 
-/**
- *
- * @author oscfr
- */
 public class MainSub {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        
-        //Crea el cliente
-        Cliente c = new Cliente();
-
-        //Muestra la pantalla de jugador
-        MainInterface pJ = new MainInterface(c);
-        pJ.setVisible(true);
-
-        //Coloca la ref a la pantalla en el cliente y lo conecta
-        c.setPantalla(pJ);
-        c.conectar();
+            //Crea el cliente
+            Subasta.Cliente.Cliente c = new Subasta.Cliente.Cliente();
+            
+            //Muestra la pantalla de iniciar seccion
+            JFrameIniciarSesion pJ = new JFrameIniciarSesion(c);
+            pJ.setVisible(true);
+            
+            //Coloca la ref a la pantalla en el cliente y lo conecta
+            c.setPantalla(pJ);
+            c.conectar();
     }
     
 }

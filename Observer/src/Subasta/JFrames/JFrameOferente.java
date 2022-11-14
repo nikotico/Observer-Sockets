@@ -15,7 +15,13 @@ public class JFrameOferente extends javax.swing.JFrame {
     /**
      * Creates new form JFrameOferente
      */
+    
     Oferente oferente;
+    
+    public JFrameOferente() {
+       initComponents();
+        
+    }
 
     public Oferente getOferente() {
         return oferente;
@@ -25,13 +31,20 @@ public class JFrameOferente extends javax.swing.JFrame {
         this.oferente = oferente;
     }
     
-    public void appendASub(String sub){
-        jTActivas.setText(jTActivas.getText() + "\n" + sub);
+    public void appendASub(String sub,int key){
+        //Integer.parseInt((String)BoxSubastas.getSelectedItem())
+        jTActivas.setText(jTActivas.getText()+
+                sub+
+                oferente.getSubasta(key).getProducto().getPrecioIni()
+                + "\n");
+       BoxSubastas.getSelectedItem();
+       
+    }
+    
+    public void addItem(Integer key){
+        BoxSubastas.addItem(key.toString());
+    }
 
-    }
-    public JFrameOferente() {
-        initComponents();
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,7 +64,7 @@ public class JFrameOferente extends javax.swing.JFrame {
         jTFinalizadas = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTActivas = new javax.swing.JTextArea();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        BoxSubastas = new javax.swing.JComboBox<>();
         jTPrecio = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -74,8 +87,6 @@ public class JFrameOferente extends javax.swing.JFrame {
         jTActivas.setColumns(20);
         jTActivas.setRows(5);
         jScrollPane2.setViewportView(jTActivas);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jTPrecio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,7 +134,7 @@ public class JFrameOferente extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(BoxSubastas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel4)
                                             .addGap(36, 36, 36)
@@ -159,7 +170,7 @@ public class JFrameOferente extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BoxSubastas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,8 +232,8 @@ public class JFrameOferente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> BoxSubastas;
     private javax.swing.JButton BtnOfertar;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

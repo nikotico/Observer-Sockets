@@ -2,10 +2,12 @@
 package Servidor;
 
 
+import Utils.AbstractObservable;
 import Utils.ID;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Servidor {
@@ -13,23 +15,62 @@ public class Servidor {
     private ServerSocket srv;
     private boolean running = true;
     public ArrayList<ThreadServidor> conexiones;
+    public ArrayList<String> usuarios;
+    public HashMap<Integer,AbstractObservable> subastas;
+    private Integer CantSubast;
 
     public Servidor() {  //CONSTRUCTOR
         conexiones = new ArrayList<ThreadServidor>();
+        usuarios = new ArrayList<String>();
+        subastas = new HashMap<Integer,AbstractObservable>();
+        CantSubast = 0;
     }
     
     public void stopserver(){
         running = false;
     }
     
+    // Inicio Codigo de la subasta
+    public void AddSubasta(AbstractObservable subasta){
+        System.out.println("Cantidad antes"+CantSubast );
+        this.subastas.put(++CantSubast, subasta);
+        System.out.println("Cantidad despues"+CantSubast );
+        System.out.println("Server 0: " +this.subastas.get(CantSubast) );
+    }
+    
+    public void SendkeySubasta(String user,ID id){
+        for (int i = 0; i < conexiones.size(); i++) {
+            if(usuarios.get(i).equals(user)){
+                conexiones.get(i).escribir(id);
+                conexiones.get(i).escribir(CantSubast);
+                System.out.println("Cantidad durante"+CantSubast );
+                conexiones.get(i).escribir(this.subastas.get(CantSubast));
+                System.out.println("Server 1: " +this.subastas.get(CantSubast) );
+            }
+        }
+    }
+    
+    public void SendSubastaToOfer(ID id){
+        for (int i = 0; i < conexiones.size(); i++) {
+                conexiones.get(i).escribir(id);
+                conexiones.get(i).escribir(CantSubast);
+                conexiones.get(i).escribir(this.subastas.get(CantSubast));
+                System.out.println("Server 2: " +this.subastas.get(CantSubast) );
+        }
+    }
+    
+    public void AddUser(String name){
+        this.usuarios.add(name);
+    }
+    // FIN Codigo de la subasta
+    
+    //Metodo reutilizable
     public void SendInfoAll(String mensaje, ID id){
         for (int i = 0; i < conexiones.size(); i++) {
             conexiones.get(i).escribir(id);
             conexiones.get(i).escribir(mensaje);
-            
         }
     }
-    
     public void enviarMensajeATodos(String mensaje){
         for (int i = 0; i < conexiones.size(); i++) {
             conexiones.get(i).escribir(ID.MESSAGE);
@@ -43,16 +84,6 @@ public class Servidor {
             conexiones.get(i).escribir(ID.BITACORA);
             conexiones.get(i).escribir(mensaje);
         }
-    }
-    
-    public ThreadServidor getConexion(String nombreCivilizacion){
-        for (int i = 0; i < conexiones.size(); i++) {
-            if(conexiones.get(i).nombre.equals(nombreCivilizacion)){
-                return conexiones.get(i);
-            }
-        }
-        System.out.println("RETORNÓ NULL EN GETCONEXION, XQ NO EXISTE EL NOMBRE BUSCADO: " + nombreCivilizacion);
-        return null;
     }
     
     public void runServer(){

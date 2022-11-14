@@ -5,8 +5,9 @@
 package Subasta.Objetos;
 
 import Subasta.Cliente.Cliente;
-import Utils.IObservable;
+import Utils.AbstractObservable;
 import Utils.IObserver;
+import java.util.HashMap;
 
 /**
  *
@@ -15,16 +16,24 @@ import Utils.IObserver;
 public class Usuario implements IObserver{
     private String nick;
     private Cliente c;
-
+    public HashMap<Integer,Subasta> subastas = new HashMap<>();
+    
     public Cliente getC() {
         return c;
     }
 
+    public void addSubasta(int key, Subasta subasta){
+        this.subastas.put(key, subasta);
+    }
+    
+    public Subasta getSubasta(int key){
+        return (Subasta) this.subastas.get(key);
+    }
+    
     public void setC(Cliente c) {
         this.c = c;
     }
-    
-
+   
     public String getNick() {
         return nick;
     }

@@ -11,6 +11,7 @@ import Subasta.JFrames.JFrameIniciarSesion;
 import Subasta.JFrames.JFrameOferente;
 import Subasta.JFrames.JFrameSubastador;
 import Subasta.Objetos.Subasta;
+import Utils.AbstractObservable;
 import Utils.IObservable;
 import Utils.IObserver;
 import java.io.DataInputStream;
@@ -68,6 +69,14 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(id);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void escribir(AbstractObservable iobservable){
+        //envía la instrucción indicada
+        try {
+            writerObj.writeObject(iobservable);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,13 +176,25 @@ public class ThreadCliente extends Thread{
                         mensajeChat = readerNormal.readUTF();
                         ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
                     break;
-                    case SUBASTA:
-                        mensajeChat = readerNormal.readUTF();
+                    case SETSUBASTA:
+                        Integer key = readerNormal.readInt();
+                        Subasta subasta = (Subasta)readerObj.readObject();
+                        System.out.println("setSUbas"+subasta);
                         if (c.getRefPantalla() instanceof JFrameSubastador){
-                            ((JFrameSubastador)c.getRefPantalla()).appendASub(mensajeChat);
+                            ((JFrameSubastador)c.getRefPantalla()).getSubastador().addSubasta(key, subasta);
+                            ((JFrameSubastador)c.getRefPantalla()).addItem(key);
+                            ((JFrameSubastador)c.getRefPantalla()).appendASub("Subasta #"+key);
                         }
-                        else{
-                            ((JFrameOferente)c.getRefPantalla()).appendASub(mensajeChat);
+
+                    break;
+                    case SUBASTA:
+                        key = readerNormal.readInt();
+                        subasta = (Subasta)readerObj.readObject();
+                        System.out.println("subs"+subasta);
+                        if (c.getRefPantalla() instanceof JFrameOferente){
+                            ((JFrameOferente)c.getRefPantalla()).getOferente().addSubasta(key, subasta);
+                            ((JFrameOferente)c.getRefPantalla()).addItem(key);
+                            ((JFrameOferente)c.getRefPantalla()).appendASub("Subasta #"+key+" Con un precio inicial de ",key);
                         }
                     break;
 

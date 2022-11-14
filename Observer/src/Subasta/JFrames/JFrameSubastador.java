@@ -40,6 +40,9 @@ public class JFrameSubastador extends javax.swing.JFrame {
     public void appendASub(String sub){
         TxtActivas.setText(TxtActivas.getText() + "\n" + sub);;
     }
+    public void addItem(Integer key){
+        BoxSubastas.addItem(key.toString());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,7 +67,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         TxtActivas = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        BoxSubastas = new javax.swing.JComboBox<>();
         BtnCancelar = new javax.swing.JButton();
         BtnCerrar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -100,8 +103,6 @@ public class JFrameSubastador extends javax.swing.JFrame {
         jScrollPane2.setViewportView(TxtActivas);
 
         jLabel7.setText("Opciones de Subasta");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         BtnCancelar.setText("Cancelar");
 
@@ -140,7 +141,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
                                         .addComponent(BtnCancelar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(BtnCerrar))
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(BoxSubastas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -208,7 +209,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BoxSubastas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(BtnCancelar)
@@ -220,17 +221,8 @@ public class JFrameSubastador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnCrearSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCrearSActionPerformed
-        try{
-            Producto product = new Producto(TxtNombre.getText(),TxtDesc.getText(),new ImageIcon(), Integer.parseInt(TxtPInicial.getText()),0,new Date());
-            Subasta subasta = new Subasta(product,new Date(),new Date());
-            subastador.getC().hiloCliente.escribir(ID.SUBASTA);
-            //subastador.getC().hiloCliente.escribir(subasta);//Esto creala subasta que se debe anadir a subastas manager para posteriormente mostrarse la info a todos
-            subastador.getC().hiloCliente.escribir("Prueba");
-        }catch (Exception e){
-            JOptionPane.showMessageDialog(null, "Los datos ingresados no son correctos \no estan incompletos!!!");
-        }
-        
-        
+         //Crea un nuevo producto y una subasta  
+        subastador.createSubasta(TxtNombre.getText(),TxtDesc.getText(),new ImageIcon(), Integer.parseInt(TxtPInicial.getText()),0,new Date());
     }//GEN-LAST:event_BtnCrearSActionPerformed
 
     /**
@@ -269,6 +261,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> BoxSubastas;
     private javax.swing.JButton BtnCancelar;
     private javax.swing.JButton BtnCerrar;
     private javax.swing.JButton BtnCrearS;
@@ -278,7 +271,6 @@ public class JFrameSubastador extends javax.swing.JFrame {
     private javax.swing.JTextField TxtNombre;
     private javax.swing.JTextField TxtPInicial;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

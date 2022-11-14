@@ -17,7 +17,11 @@ public enum ID implements Serializable{
     DISLIKES,
     SUBASTA,
     SUBASTAR,
+    SETSUBASTA,
     MESSAGE,//Mensaje X para mandar a la consola
     TEST,
+    CERRADA,
+    VENDIDA,
+    CANCELADA,
     START;//inicar partida   ;
 }

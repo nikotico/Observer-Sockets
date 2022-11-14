@@ -4,6 +4,7 @@
  */
 package Subasta.Objetos;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.swing.ImageIcon;
 
@@ -11,7 +12,7 @@ import javax.swing.ImageIcon;
  *
  * @author oscfr
  */
-public class Producto {
+public class Producto implements Serializable{
     String nombre;
     String descripcion;
     ImageIcon imagen;
@@ -39,6 +40,14 @@ public class Producto {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
+        this.PrecioIni = PrecioIni;
+        this.PreciFinal = PreciFinal;
+        this.fecha = fecha;
+    }
+    
+    public Producto(String nombre, String descripcion, int PrecioIni, int PreciFinal,Date fecha) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
         this.PrecioIni = PrecioIni;
         this.PreciFinal = PreciFinal;
         this.fecha = fecha;
