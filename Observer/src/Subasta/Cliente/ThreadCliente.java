@@ -179,7 +179,6 @@ public class ThreadCliente extends Thread{
                     case SETSUBASTA:
                         Integer key = readerNormal.readInt();
                         Subasta subasta = (Subasta)readerObj.readObject();
-                        System.out.println("setSUbas"+subasta);
                         if (c.getRefPantalla() instanceof JFrameSubastador){
                             ((JFrameSubastador)c.getRefPantalla()).getSubastador().addSubasta(key, subasta);
                             ((JFrameSubastador)c.getRefPantalla()).addItem(key);
@@ -190,7 +189,6 @@ public class ThreadCliente extends Thread{
                     case SUBASTA:
                         key = readerNormal.readInt();
                         subasta = (Subasta)readerObj.readObject();
-                        System.out.println("subs"+subasta);
                         if (c.getRefPantalla() instanceof JFrameOferente){
                             ((JFrameOferente)c.getRefPantalla()).getOferente().addSubasta(key, subasta);
                             ((JFrameOferente)c.getRefPantalla()).addItem(key);

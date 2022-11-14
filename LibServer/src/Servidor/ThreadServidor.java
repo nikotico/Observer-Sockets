@@ -114,7 +114,6 @@ public class ThreadServidor extends Thread {
                     break;
                     case SETSUBASTA:
                         AbstractObservable subasta = (AbstractObservable)readerObj.readObject();
-                        System.out.println("Llego" + subasta);
                         nombre = readerNormal.readUTF();
                         server.AddSubasta(subasta);
                         server.SendkeySubasta(nombre,ID.SETSUBASTA);
@@ -122,7 +121,6 @@ public class ThreadServidor extends Thread {
                     break;
                     case SUBASTA:
                         subasta = (AbstractObservable)readerObj.readObject();
-                        System.out.println("La subasta llego al server");
                         enviar = "Servidor dice >> "+": Hay una nueva subasta";
                         server.AddSubasta(subasta);
                         server.SendInfoAll(enviar,ID.SUBASTA);

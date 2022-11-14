@@ -32,10 +32,7 @@ public class Servidor {
     
     // Inicio Codigo de la subasta
     public void AddSubasta(AbstractObservable subasta){
-        System.out.println("Cantidad antes"+CantSubast );
         this.subastas.put(++CantSubast, subasta);
-        System.out.println("Cantidad despues"+CantSubast );
-        System.out.println("Server 0: " +this.subastas.get(CantSubast) );
     }
     
     public void SendkeySubasta(String user,ID id){
@@ -43,9 +40,7 @@ public class Servidor {
             if(usuarios.get(i).equals(user)){
                 conexiones.get(i).escribir(id);
                 conexiones.get(i).escribir(CantSubast);
-                System.out.println("Cantidad durante"+CantSubast );
                 conexiones.get(i).escribir(this.subastas.get(CantSubast));
-                System.out.println("Server 1: " +this.subastas.get(CantSubast) );
             }
         }
     }
