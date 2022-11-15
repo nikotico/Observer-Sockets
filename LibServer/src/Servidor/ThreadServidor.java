@@ -90,11 +90,22 @@ public class ThreadServidor extends Thread {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void escribir(float numero){
+        try {
+            writerNormal.writeFloat(numero);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void run (){
         ID id;
         String mensajeChat="",enviar="";
+        int keyO = 0;
+        String nick = null;
+        float oferta = 0;
+        
         while (running){
             try {
                 id = (ID)readerObj.readObject(); // esperar hasta que reciba un entero
@@ -135,12 +146,14 @@ public class ThreadServidor extends Thread {
                         server.enviarMensajeATodos("La subasta #"+key+" ha sido cancelada");
                     break;
                     case OFERTA:
-                        int keyO = readerNormal.readInt();
-                        String nick = readerNormal.readUTF();
-                        readerNormal.reset();
-                        float oferta = readerNormal.readFloat();
+                        keyO = readerNormal.readInt();
+                        nick = readerNormal.readUTF();
+                        oferta = readerNormal.readFloat();
                         writerObj.writeObject(ID.OFERTA);
                         writerObj.writeObject(server.getSubasta(keyO));
+  
+                    break;
+                    case GETNICKS:
                         String nickS = readerNormal.readUTF();
                         server.SendOferta(nickS, ID.RECIOFERTA,nick,keyO,oferta);
                     break;

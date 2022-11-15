@@ -5,15 +5,11 @@ package Subasta.Cliente;
 
 
 
-import Utils.ID;
-import Interface.MainInterface;
-import Subasta.JFrames.JFrameIniciarSesion;
-import Subasta.JFrames.JFrameOferente;
-import Subasta.JFrames.JFrameSubastador;
-import Subasta.Objetos.Oferente;
-import Subasta.Objetos.Subasta;
-import Subasta.Objetos.Subastador;
+import Utils.*;
+import Subasta.JFrames.*;
+import Subasta.Objetos.*;
 import Utils.AbstractObservable;
+import static Utils.ID.GETNICKS;
 import Utils.IObservable;
 import Utils.IObserver;
 import java.io.DataInputStream;
@@ -144,7 +140,14 @@ public class ThreadCliente extends Thread{
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    public void escribir(float numero){
+        try {
+            writerNormal.writeFloat(numero);
+            writerNormal.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private void denegarConexion(){
         //Muestra el mensaje
@@ -227,6 +230,7 @@ public class ThreadCliente extends Thread{
                         try {
                             subasta = (Subasta)c.hiloCliente.readerObj.readObject();
                             String nickS = subasta.getSubastador();
+                            c.hiloCliente.escribir(GETNICKS);
                             c.hiloCliente.escribir(nickS);
                         } catch (IOException ex) {
                             Logger.getLogger(Oferente.class.getName()).log(Level.SEVERE, null, ex);
@@ -236,9 +240,9 @@ public class ThreadCliente extends Thread{
                     break;
                     case RECIOFERTA:
                         System.out.println("LlegaC");
-                        String nick = c.hiloCliente.readerNormal.readUTF();
-                        key = c.hiloCliente.readerNormal.readInt();
-                        float oferta = c.hiloCliente.readerNormal.readFloat();
+                        String nick = readerNormal.readUTF();
+                        key = readerNormal.readInt();
+                        float oferta = readerNormal.readFloat();
                         if (c.getRefPantalla() instanceof JFrameSubastador){
                             ((JFrameSubastador)c.getRefPantalla()).getSubastador().aceptarOferta(oferta,nick,key);
                         }

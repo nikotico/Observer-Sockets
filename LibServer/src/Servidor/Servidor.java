@@ -67,7 +67,6 @@ public class Servidor {
                 conexiones.get(i).escribir(id);
                 conexiones.get(i).escribir(CantSubast);
                 conexiones.get(i).escribir(this.subastas.get(CantSubast));
-                System.out.println("Server 2: " +this.subastas.get(CantSubast) );
         }
     }
     public void SendOferta(String user, ID id, String nick, int key, float oferta){
@@ -77,6 +76,7 @@ public class Servidor {
                 conexiones.get(i).escribir(nick);
                 conexiones.get(i).escribir(key);
                 conexiones.get(i).escribir(oferta);
+                System.out.println("Server 3: " +this.subastas.get(CantSubast) );
             }
         }
     }
