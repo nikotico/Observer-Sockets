@@ -265,7 +265,12 @@ public class ThreadCliente extends Thread{
                             subasta.setStatus(Subasta.Status.CERRADA);
                             subasta.setFinalProg(new Date());
                             c.hiloCliente.escribir(subasta);
-                            c.hiloCliente.escribir(subasta.getOferenteActual());
+                            if (subasta.getOferenteActual() != null){ 
+                                c.hiloCliente.writerNormal.writeBoolean(true);
+                                c.hiloCliente.escribir(subasta.getOferenteActual());
+                            }else{
+                                c.hiloCliente.writerNormal.writeBoolean(false);
+                            }
                         } catch (ClassNotFoundException ex) {
                             Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
                         }

@@ -108,6 +108,7 @@ public class ThreadServidor extends Thread {
         int key = 0;
         String nombre = "";
         AbstractObservable subasta = null;
+        Boolean op = null;
         while (running){
             try {
                 id = (ID)readerObj.readObject(); // esperar hasta que reciba un entero
@@ -153,8 +154,6 @@ public class ThreadServidor extends Thread {
                         oferta = readerNormal.readFloat();
                         writerObj.writeObject(ID.OFERTA);
                         writerObj.writeObject(server.getSubasta(keyO));
-                        
-  
                     break;
                     case GETNICKS:
                         String nickS = readerNormal.readUTF();
@@ -163,9 +162,8 @@ public class ThreadServidor extends Thread {
                     case RESPOFERTA:
                         key = readerNormal.readInt();
                         subasta = server.getSubasta(key);
-                        System.out.println(key);
                         writerObj.writeObject(subasta);
-                        Boolean op = readerNormal.readBoolean();
+                        op = readerNormal.readBoolean();
                         if (op){
                             subasta = (AbstractObservable)readerObj.readObject();
                             server.setSubasta(key, subasta);
@@ -188,9 +186,18 @@ public class ThreadServidor extends Thread {
                         writerObj.writeObject(subasta);
                         subasta = (AbstractObservable)readerObj.readObject();
                         server.setSubasta(key, subasta);
-                        nombre = readerNormal.readUTF();
-                        server.enviarMensajeATodos("La subasta #" + key + " ha cerrado");
-                        server.SendSpecificMessage(nombre, "Felicitaciones ha ganado la subasta#"+ key +"!!!", ID.MESSAGE);
+                        op = readerNormal.readBoolean();
+                        if (op){
+                            nombre = readerNormal.readUTF();
+                            server.enviarMensajeATodos("La subasta #" + key + " ha cerrado");
+                            server.SendSpecificMessage(nombre, "Felicitaciones ha ganado la subasta#"+ key +"!!!", ID.MESSAGE);
+                        }
+                        else{
+                            server.enviarMensajeATodos("La subasta #" + key + " ha cerrado sin ganador");
+                        }
+                        
+                        
+                        
                     break;
                 }
             } catch (IOException ex) { 
