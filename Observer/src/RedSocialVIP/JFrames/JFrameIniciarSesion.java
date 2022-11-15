@@ -4,6 +4,7 @@
  */
 package RedSocialVIP.JFrames;
 
+import RedSocialVIP.Cliente.Cliente;
 import Subasta.JFrames.*;
 
 /**
@@ -15,8 +16,14 @@ public class JFrameIniciarSesion extends javax.swing.JFrame {
     /**
      * Creates new form JFrameIniciarSesion
      */
+    private Cliente c;
     public JFrameIniciarSesion() {
         initComponents();
+    }
+    public JFrameIniciarSesion(Cliente jugador) {
+        this.c = jugador;
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

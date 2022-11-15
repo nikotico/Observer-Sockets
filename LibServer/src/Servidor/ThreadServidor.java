@@ -125,7 +125,24 @@ public class ThreadServidor extends Thread {
                         server.AddSubasta(subasta);
                         server.SendInfoAll(enviar,ID.SUBASTA);
                     break;
-
+                    case CANCELADA:
+                        int key = readerNormal.readInt();
+                        subasta = server.getSubasta(key);
+                        
+                        writerObj.writeObject(subasta);
+                        subasta = (AbstractObservable)readerObj.readObject();
+                        server.setSubasta(key, subasta);
+                        server.enviarMensajeATodos("La subasta #"+key+" ha sido cancelada");
+                    break;
+                    case OFERTA:
+                        int keyO = readerNormal.readInt();
+                        String nick = readerNormal.readUTF();
+                        float oferta = readerNormal.readFloat();
+                        writerObj.writeObject(ID.OFERTA);
+                        writerObj.writeObject(server.getSubasta(keyO));
+                        String nickS = readerNormal.readUTF();
+                        server.SendOferta(nickS, ID.RECIOFERTA,nick,keyO,oferta);
+                    break;
                 }
             } catch (IOException ex) { 
                 System.out.println("ERROR EN EL TREADSERVIDOR"); //lo desconecta para que no salga este mensaje infinitas veces

@@ -4,12 +4,17 @@
  */
 package Subasta.JFrames;
 
+import Subasta.Cliente.Cliente;
+import Subasta.Objetos.Oferente;
 import Subasta.Objetos.Producto;
 import Subasta.Objetos.Subasta;
 import Subasta.Objetos.Subastador;
 import Utils.ID;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -88,9 +93,9 @@ public class JFrameSubastador extends javax.swing.JFrame {
 
         jLabel3.setText("Imagen:");
 
-        jLabel4.setText("Subastas Activas");
+        jLabel4.setText("Notificaciones Subastas");
 
-        jLabel5.setText("Subastas Finalizadas");
+        jLabel5.setText("Subastas Ganadas");
 
         jLabel6.setText("Precio inicial:");
 
@@ -105,8 +110,18 @@ public class JFrameSubastador extends javax.swing.JFrame {
         jLabel7.setText("Opciones de Subasta");
 
         BtnCancelar.setText("Cancelar");
+        BtnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCancelarActionPerformed(evt);
+            }
+        });
 
         BtnCerrar.setText("Cerrar");
+        BtnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCerrarActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Seleccionar");
 
@@ -224,6 +239,25 @@ public class JFrameSubastador extends javax.swing.JFrame {
          //Crea un nuevo producto y una subasta  
         subastador.createSubasta(TxtNombre.getText(),TxtDesc.getText(),new ImageIcon(), Integer.parseInt(TxtPInicial.getText()),0,new Date());
     }//GEN-LAST:event_BtnCrearSActionPerformed
+
+    private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
+        //cancela una subasta cambiando su status
+        if(BoxSubastas.getSelectedItem() != null){
+            int key = Integer.parseInt(BoxSubastas.getSelectedItem().toString());
+            try {
+                subastador.cancelarSubasta(key);
+            } catch (IOException ex) {
+                Logger.getLogger(JFrameSubastador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Seleccione una opcion!!!");
+        }
+    }//GEN-LAST:event_BtnCancelarActionPerformed
+
+    private void BtnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCerrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCerrarActionPerformed
 
     /**
      * @param args the command line arguments

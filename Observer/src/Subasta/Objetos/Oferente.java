@@ -5,6 +5,10 @@
 package Subasta.Objetos;
 
 import Subasta.Cliente.Cliente;
+import Utils.ID;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,6 +19,13 @@ public class Oferente extends Usuario{
         this.setNick(nick);
         this.setC(c);
     }
-    void ingresarSubasta (Subasta subasta){}
-    void ofertar (float oferta,Subasta subasta){};
+
+    public void ofertar (float oferta,int key){
+        this.getC().hiloCliente.escribir(ID.OFERTA);
+        this.getC().hiloCliente.escribir(key);
+        this.getC().hiloCliente.escribir(getNick());
+        this.getC().hiloCliente.escribir(oferta);
+        System.out.println("Termina de enviar");
+        
+    };
 }

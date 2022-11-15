@@ -23,5 +23,8 @@ public enum ID implements Serializable{
     CERRADA,
     VENDIDA,
     CANCELADA,
+    OFERTA,
+    RECIOFERTA,
+    RESPOFERTA,
     START;//inicar partida   ;
 }

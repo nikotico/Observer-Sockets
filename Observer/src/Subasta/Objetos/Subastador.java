@@ -5,10 +5,15 @@
 package Subasta.Objetos;
 
 import Subasta.Cliente.Cliente;
+import Subasta.Objetos.Subasta.Status;
 import Utils.ID;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,19 +27,37 @@ public class Subastador extends Usuario{
     
     //Crea la subasta y la manda al servidor
     public void createSubasta (String nombre, String descripcion, ImageIcon imagen, int PrecioIni, int PrecioFinal, Date fechaProg){
-//      Producto producto = new Producto(nombre,descripcion,imagen, PrecioIni,PrecioFinal,fechaProg);
         Producto producto = new Producto(nombre,descripcion, PrecioIni,PrecioFinal,fechaProg);
-        Subasta subasta = new Subasta(producto,new Date(),new Date());
+        Subasta subasta = new Subasta(producto,new Date(),new Date(),this.getNick());
         this.getC().hiloCliente.escribir(ID.SETSUBASTA);
         this.getC().hiloCliente.escribir(subasta);
         System.out.println("Se fue" + subasta);
+        System.out.println(getNick());
         this.getC().hiloCliente.escribir(getNick());
     }
     
-    void aceptarOferta (float precio,Oferente oferente){}
-    void cerrarSubasta (){}
-    void cancelarSubasta (){}
-    void enviarFelicitacion (String felicitacion,Oferente oferente){}
+    public void aceptarOferta (float precio,String oferente, int key){
+        int resp = JOptionPane.showConfirmDialog(null, "El oferente "+ oferente +" ha hecho una oferta de $"+ precio +" en la subasta #"+key+"\n"+"¿Quiere aceptar la oferta?","Alerta!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (resp == 0){
+            //this.getC().hiloCliente.escribir(ID.SETSUBASTA);
+            
+        }
+        else{
+            //this.getC().hiloCliente.escribir(ID.SETSUBASTA)
+            //
+        }
+    }
+    public void cerrarSubasta (){
+    
+    }
+    
+    
+    public void cancelarSubasta (int key) throws IOException{
+        this.getC().hiloCliente.escribir(ID.CANCELADA);
+        this.getC().hiloCliente.escribir(key);
+                  
+    }
+    public void enviarFelicitacion (String felicitacion,Oferente oferente){}
 
     
 }

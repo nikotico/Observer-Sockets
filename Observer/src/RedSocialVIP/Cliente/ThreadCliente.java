@@ -1,18 +1,17 @@
 
 
-package Subasta.Cliente;
+package RedSocialVIP.Cliente;
 
 
 
 
+import Subasta.Cliente.*;
 import Utils.ID;
 import Interface.MainInterface;
 import Subasta.JFrames.JFrameIniciarSesion;
 import Subasta.JFrames.JFrameOferente;
 import Subasta.JFrames.JFrameSubastador;
-import Subasta.Objetos.Oferente;
 import Subasta.Objetos.Subasta;
-import Subasta.Objetos.Subastador;
 import Utils.AbstractObservable;
 import Utils.IObservable;
 import Utils.IObserver;
@@ -168,19 +167,11 @@ public class ThreadCliente extends Thread{
                     break;
                     case MESSAGE:
                         mensajeChat = readerNormal.readUTF();
-                        if (c.getRefPantalla() instanceof JFrameSubastador){
-                            ((JFrameSubastador)c.getRefPantalla()).appendASub(mensajeChat);
-                        }
-                        else if (c.getRefPantalla() instanceof JFrameOferente){
-                            ((JFrameOferente)c.getRefPantalla()).notifASub(mensajeChat);
-                        }
-                        else{
-                            ((JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
-                        }
+                        ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
                     break;
                     case BITACORA:
                         mensajeChat = readerNormal.readUTF();
-                        ((JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
+                        ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
                     break;
                     case CHAT:
                         mensajeChat = readerNormal.readUTF();
@@ -194,6 +185,9 @@ public class ThreadCliente extends Thread{
                             ((JFrameSubastador)c.getRefPantalla()).addItem(key);
                             ((JFrameSubastador)c.getRefPantalla()).appendASub("Subasta #"+key);
                         }
+                        else{
+                            System.out.print("sjdkjash");
+                        }
 
                     break;
                     case SUBASTA:
@@ -203,35 +197,6 @@ public class ThreadCliente extends Thread{
                             ((JFrameOferente)c.getRefPantalla()).getOferente().addSubasta(key, subasta);
                             ((JFrameOferente)c.getRefPantalla()).addItem(key);
                             ((JFrameOferente)c.getRefPantalla()).appendASub("Subasta #"+key+" Con un precio inicial de ",key);
-                        }
-                    break;
-                    case CANCELADA:
-                        try {
-                            subasta = (Subasta)c.hiloCliente.readerObj.readObject();
-                            subasta.setStatus(Subasta.Status.CANCELADA);
-                            c.hiloCliente.escribir(subasta);
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    break;
-                    case OFERTA:
-                        try {
-                            subasta = (Subasta)c.hiloCliente.readerObj.readObject();
-                            String nickS = subasta.getSubastador();
-                            c.hiloCliente.escribir(nickS);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Oferente.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(Oferente.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    break;
-                    case RECIOFERTA:
-                        System.out.println("LlegaC");
-                        String nick = c.hiloCliente.readerNormal.readUTF();
-                        key = c.hiloCliente.readerNormal.readInt();
-                        float oferta = c.hiloCliente.readerNormal.readFloat();
-                        if (c.getRefPantalla() instanceof JFrameSubastador){
-                            ((JFrameSubastador)c.getRefPantalla()).getSubastador().aceptarOferta(oferta,nick,key);
                         }
                     break;
 

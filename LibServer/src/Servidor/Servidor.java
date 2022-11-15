@@ -35,6 +35,13 @@ public class Servidor {
         this.subastas.put(++CantSubast, subasta);
     }
     
+    public AbstractObservable getSubasta(int key){
+        return this.subastas.get(key);
+    }
+    public void setSubasta(int key, AbstractObservable subasta){
+        this.subastas.put(key, subasta);
+    }
+    
     public void SendkeySubasta(String user,ID id){
         for (int i = 0; i < conexiones.size(); i++) {
             if(usuarios.get(i).equals(user)){
@@ -51,6 +58,16 @@ public class Servidor {
                 conexiones.get(i).escribir(CantSubast);
                 conexiones.get(i).escribir(this.subastas.get(CantSubast));
                 System.out.println("Server 2: " +this.subastas.get(CantSubast) );
+        }
+    }
+    public void SendOferta(String user, ID id, String nick, int key, float oferta){
+        for (int i = 0; i < conexiones.size(); i++) {
+            if(usuarios.get(i).equals(user)){
+                conexiones.get(i).escribir(id);
+                conexiones.get(i).escribir(nick);
+                conexiones.get(i).escribir(key);
+                conexiones.get(i).escribir(oferta);
+            }
         }
     }
     

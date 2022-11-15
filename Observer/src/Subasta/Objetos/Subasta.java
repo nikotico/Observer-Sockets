@@ -20,21 +20,42 @@ public class Subasta extends AbstractObservable implements Serializable{
     Date inicio;
     Date finalProg;
     Oferente oferenteGanador;
+    Status status;
+    String subastador;
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
     HashMap<Integer,Oferente> Hashoferentes = new HashMap<>();
-    
-    public Subasta(Producto producto, Date inicio, Date finalProg) {
+    public enum Status {
+        VENDIDA,
+        CERRADA,
+        CANCELADA
+    }
+    public Subasta(Producto producto, Date inicio, Date finalProg, String subastador) {
         this.producto = producto;
         this.inicio = inicio;
         this.finalProg = finalProg;
         this.precioActual = producto.getPrecioIni();
+        this.subastador = subastador;
+        this.status = null;
     }
+
+    public String getSubastador() {
+        return subastador;
+    }
+
+    public void setSubastador(String subastador) {
+        this.subastador = subastador;
+    }
+
         
     void addOferente (Oferente oferente){
         Hashoferentes.put(Hashoferentes.size()+1,oferente);
         this.addObserver(oferente);
     };
     void updateOferente (Oferente oferente, float oferta){
-        //Hashoferentes.get(oferente).
+        //Hashoferentes.get(oferente).set
     };
     
     public Date getInicio() {

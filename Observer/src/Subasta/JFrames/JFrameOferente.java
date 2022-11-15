@@ -5,6 +5,7 @@
 package Subasta.JFrames;
 
 import Subasta.Objetos.Oferente;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,7 +31,9 @@ public class JFrameOferente extends javax.swing.JFrame {
     public void setOferente(Oferente oferente) {
         this.oferente = oferente;
     }
-    
+    public void notifASub(String sub){
+        jTActivas.setText(jTActivas.getText()+ sub);
+    }
     public void appendASub(String sub,int key){
         //Integer.parseInt((String)BoxSubastas.getSelectedItem())
         jTActivas.setText(jTActivas.getText()+
@@ -137,8 +140,8 @@ public class JFrameOferente extends javax.swing.JFrame {
                                         .addComponent(BoxSubastas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel4)
-                                            .addGap(36, 36, 36)
-                                            .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(BtnOfertar, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -193,7 +196,14 @@ public class JFrameOferente extends javax.swing.JFrame {
     }//GEN-LAST:event_jTPrecioActionPerformed
 
     private void BtnOfertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnOfertarActionPerformed
-        int oferta = Integer.parseInt(jTPrecio.getText());
+        if (!jTPrecio.getText().isEmpty()){
+            float oferta = Integer.parseInt(jTPrecio.getText());
+            oferente.ofertar(oferta, Integer.parseInt(BoxSubastas.getSelectedItem().toString()));
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Introduzca una cantidad a Ofertar!!");
+        }
+            
     }//GEN-LAST:event_BtnOfertarActionPerformed
 
     /**
