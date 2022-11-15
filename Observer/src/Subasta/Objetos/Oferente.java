@@ -24,8 +24,6 @@ public class Oferente extends Usuario{
         this.getC().hiloCliente.escribir(ID.OFERTA);
         this.getC().hiloCliente.escribir(key);
         this.getC().hiloCliente.escribir(getNick());
-        this.getC().hiloCliente.escribir(oferta);
-        System.out.println("Termina de enviar");
-        
+        this.getC().hiloCliente.escribir(oferta);        
     };
 }

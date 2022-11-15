@@ -36,36 +36,27 @@ public class Subastador extends Usuario{
         this.getC().hiloCliente.escribir(getNick());
     }
     
-    public void aceptarOferta (float precio,String oferente, int key){
+    public void aceptarOferta (float precio,String oferente, int key,Subasta subasta){
         int resp = JOptionPane.showConfirmDialog(null, "El oferente "+ oferente +" ha hecho una oferta de $"+ precio +" en la subasta #"+key+"\n"+"¿Quiere aceptar la oferta?","Alerta!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-        if (resp == 0){
-            this.getC().hiloCliente.escribir(ID.RESPOFERTA);
-            this.getC().hiloCliente.escribir(key);
-            try {
-                Subasta subasta = (Subasta)this.getC().hiloCliente.readerObj.readObject(); 
-                this.getC().hiloCliente.escribir(subasta);
-            } catch (IOException ex) {
-                Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
-            }  
+        if (resp == 0){             
+            subasta.setOferenteActual(oferente);
+            this.getC().hiloCliente.escribir(subasta);
+            this.getC().hiloCliente.escribir(precio);
         }
         else{
             this.getC().hiloCliente.escribir(ID.CANOFERTA);
             this.getC().hiloCliente.escribir(oferente);
         }
     }
-    public void cerrarSubasta (){
-    
+    public void cerrarSubasta (int key){
+        this.getC().hiloCliente.escribir(ID.CERRADA);
+        this.getC().hiloCliente.escribir(key);
+        
     }
     
     
     public void cancelarSubasta (int key) throws IOException{
         this.getC().hiloCliente.escribir(ID.CANCELADA);
-        this.getC().hiloCliente.escribir(key);
-                  
+        this.getC().hiloCliente.escribir(key);          
     }
-    public void enviarFelicitacion (String felicitacion,Oferente oferente){}
-
-    
 }

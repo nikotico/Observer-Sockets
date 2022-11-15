@@ -21,10 +21,21 @@ public class Subasta extends AbstractObservable implements Serializable{
     Date finalProg;
     String oferenteActual;
     Status status;
+
+    public String getOferenteActual() {
+        return oferenteActual;
+    }
+
+    public void setOferenteActual(String oferenteActual) {
+        this.oferenteActual = oferenteActual;
+    }
     String subastador;
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+    public Status getStatus() {
+        return status;
     }
     HashMap<Integer,Oferente> Hashoferentes = new HashMap<>();
     public enum Status {

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -29,7 +30,7 @@ public class ThreadCliente extends Thread{
     private Socket socketRef;
     public ObjectInputStream readerObj;
     public ObjectOutputStream writerObj;
-    private DataInputStream readerNormal;
+    public DataInputStream readerNormal;
     public DataOutputStream writerNormal;
     
     //Ref al cliente
@@ -165,6 +166,8 @@ public class ThreadCliente extends Thread{
     public void run (){
         ID id;
         String mensajeChat = null;
+        Subasta subasta = null;
+        int key = 0;
         while (running){
             try {
                 id = (ID) readerObj.readObject(); // esperar hasta que reciba un entero
@@ -199,8 +202,8 @@ public class ThreadCliente extends Thread{
                         ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
                     break;
                     case SETSUBASTA:
-                        Integer key = readerNormal.readInt();
-                        Subasta subasta = (Subasta)readerObj.readObject();
+                        key = readerNormal.readInt();
+                        subasta = (Subasta)readerObj.readObject();
                         if (c.getRefPantalla() instanceof JFrameSubastador){
                             ((JFrameSubastador)c.getRefPantalla()).getSubastador().addSubasta(key, subasta);
                             ((JFrameSubastador)c.getRefPantalla()).addItem(key);
@@ -221,6 +224,7 @@ public class ThreadCliente extends Thread{
                         try {
                             subasta = (Subasta)c.hiloCliente.readerObj.readObject();
                             subasta.setStatus(Subasta.Status.CANCELADA);
+                            subasta.setFinalProg(new Date());
                             c.hiloCliente.escribir(subasta);
                         } catch (ClassNotFoundException ex) {
                             Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
@@ -239,12 +243,31 @@ public class ThreadCliente extends Thread{
                         }
                     break;
                     case RECIOFERTA:
-                        System.out.println("LlegaC");
                         String nick = readerNormal.readUTF();
                         key = readerNormal.readInt();
                         float oferta = readerNormal.readFloat();
-                        if (c.getRefPantalla() instanceof JFrameSubastador){
-                            ((JFrameSubastador)c.getRefPantalla()).getSubastador().aceptarOferta(oferta,nick,key);
+                        c.hiloCliente.escribir(ID.RESPOFERTA);
+                        c.hiloCliente.escribir(key);
+                        System.out.println(key);
+                        subasta = (Subasta)readerObj.readObject();
+                        if ((c.getRefPantalla() instanceof JFrameSubastador) && (subasta.getStatus() == null)){
+                            c.hiloCliente.writerNormal.writeBoolean(true);
+                            ((JFrameSubastador)c.getRefPantalla()).getSubastador().aceptarOferta(oferta,nick,key, subasta);
+                        }
+                        else{
+                            c.hiloCliente.writerNormal.writeBoolean(false);
+                            c.hiloCliente.escribir(nick);
+                        }
+                    break;
+                    case CERRADA:
+                        try {
+                            subasta = (Subasta)c.hiloCliente.readerObj.readObject();
+                            subasta.setStatus(Subasta.Status.CERRADA);
+                            subasta.setFinalProg(new Date());
+                            c.hiloCliente.escribir(subasta);
+                            c.hiloCliente.escribir(subasta.getOferenteActual());
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     break;
                     case RESPOFERTA:

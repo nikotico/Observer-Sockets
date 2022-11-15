@@ -105,13 +105,15 @@ public class ThreadServidor extends Thread {
         int keyO = 0;
         String nick = null;
         float oferta = 0;
-        
+        int key = 0;
+        String nombre = "";
+        AbstractObservable subasta = null;
         while (running){
             try {
                 id = (ID)readerObj.readObject(); // esperar hasta que reciba un entero
                 switch (id){
                     case SETNAME:
-                        String nombre = readerNormal.readUTF();
+                        nombre = readerNormal.readUTF();
                         server.AddUser(nombre);
                     break;
                     case CHAT:
@@ -124,7 +126,7 @@ public class ThreadServidor extends Thread {
                         server.mensajeBitacora(mensajeBitacora);
                     break;
                     case SETSUBASTA:
-                        AbstractObservable subasta = (AbstractObservable)readerObj.readObject();
+                        subasta = (AbstractObservable)readerObj.readObject();
                         nombre = readerNormal.readUTF();
                         server.AddSubasta(subasta);
                         server.SendkeySubasta(nombre,ID.SETSUBASTA);
@@ -137,9 +139,9 @@ public class ThreadServidor extends Thread {
                         server.SendInfoAll(enviar,ID.SUBASTA);
                     break;
                     case CANCELADA:
-                        int key = readerNormal.readInt();
+                        key = readerNormal.readInt();
                         subasta = server.getSubasta(key);
-                        
+                        writerObj.writeObject(ID.CANCELADA);
                         writerObj.writeObject(subasta);
                         subasta = (AbstractObservable)readerObj.readObject();
                         server.setSubasta(key, subasta);
@@ -151,26 +153,45 @@ public class ThreadServidor extends Thread {
                         oferta = readerNormal.readFloat();
                         writerObj.writeObject(ID.OFERTA);
                         writerObj.writeObject(server.getSubasta(keyO));
+                        
   
                     break;
                     case GETNICKS:
                         String nickS = readerNormal.readUTF();
-                        server.SendOferta(nickS, ID.RECIOFERTA,nick,keyO,oferta);
+                        server.SendOferta(nickS, ID.RECIOFERTA, nick,keyO,oferta);
                     break;
                     case RESPOFERTA:
                         key = readerNormal.readInt();
                         subasta = server.getSubasta(key);
+                        System.out.println(key);
                         writerObj.writeObject(subasta);
-                        
-                        subasta = (AbstractObservable)readerObj.readObject();
-                        server.setSubasta(key, subasta);
-                        int tope = readerNormal.readInt();
-                        server.enviarMensajeATodos("La subasta #"+key+" tiene nueva nuevo tope de $" + tope);
+                        Boolean op = readerNormal.readBoolean();
+                        if (op){
+                            subasta = (AbstractObservable)readerObj.readObject();
+                            server.setSubasta(key, subasta);
+                            float tope = readerNormal.readFloat();
+                            server.enviarMensajeATodos("La subasta #"+ key +" tiene nueva nuevo tope de $" + tope);
+                        }
+                        else{
+                            nombre = readerNormal.readUTF();
+                            server.SendSpecificMessage(nombre, "No se pueden realizar mas ofertas a esta subasta", ID.MESSAGE);
+                        }
                     break;
                     case CANOFERTA:
                         nombre = readerNormal.readUTF();
                         server.SendSpecificMessage(nombre, "Su oferta ha sido rechazada", ID.MESSAGE);
-                    break;                    
+                    break;
+                    case CERRADA:
+                        key = readerNormal.readInt();
+                        subasta = server.getSubasta(key);
+                        writerObj.writeObject(ID.CERRADA);
+                        writerObj.writeObject(subasta);
+                        subasta = (AbstractObservable)readerObj.readObject();
+                        server.setSubasta(key, subasta);
+                        nombre = readerNormal.readUTF();
+                        server.enviarMensajeATodos("La subasta #" + key + " ha cerrado");
+                        server.SendSpecificMessage(nombre, "Felicitaciones ha ganado la subasta#"+ key +"!!!", ID.MESSAGE);
+                    break;
                 }
             } catch (IOException ex) { 
                 System.out.println("ERROR EN EL TREADSERVIDOR"); //lo desconecta para que no salga este mensaje infinitas veces

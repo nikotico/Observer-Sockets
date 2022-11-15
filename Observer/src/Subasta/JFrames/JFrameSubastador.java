@@ -43,7 +43,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
         this.lblNombre.setText(nombre);
     }
     public void appendASub(String sub){
-        TxtActivas.setText(TxtActivas.getText() + "\n" + sub);;
+        TxtActivas.setText(TxtActivas.getText() + "\n" + sub);
     }
     public void addItem(Integer key){
         BoxSubastas.addItem(key.toString());
@@ -256,7 +256,14 @@ public class JFrameSubastador extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnCancelarActionPerformed
 
     private void BtnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCerrarActionPerformed
-        // TODO add your handling code here:
+        //cancela una subasta cambiando su status
+        if(BoxSubastas.getSelectedItem() != null){
+            int key = Integer.parseInt(BoxSubastas.getSelectedItem().toString());
+            subastador.cerrarSubasta(key);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Seleccione una opcion!!!");
+        }
     }//GEN-LAST:event_BtnCerrarActionPerformed
 
     /**

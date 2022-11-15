@@ -47,7 +47,6 @@ public class Servidor {
             if(usuarios.get(i).equals(user)){
                 conexiones.get(i).escribir(id);
                 conexiones.get(i).escribir(message);
-                conexiones.get(i).escribir(this.subastas.get(CantSubast));
             }
         }
     }
