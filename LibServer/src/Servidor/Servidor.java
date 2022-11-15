@@ -42,6 +42,16 @@ public class Servidor {
         this.subastas.put(key, subasta);
     }
     
+    public void SendSpecificMessage(String user,String message,ID id){
+        for (int i = 0; i < conexiones.size(); i++) {
+            if(usuarios.get(i).equals(user)){
+                conexiones.get(i).escribir(id);
+                conexiones.get(i).escribir(message);
+                conexiones.get(i).escribir(this.subastas.get(CantSubast));
+            }
+        }
+    }
+    
     public void SendkeySubasta(String user,ID id){
         for (int i = 0; i < conexiones.size(); i++) {
             if(usuarios.get(i).equals(user)){

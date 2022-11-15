@@ -45,8 +45,8 @@
                                       <Component id="BoxSubastas" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                          <Component id="jTPrecio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jTPrecio" min="-2" pref="94" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="BtnOfertar" alignment="0" min="-2" pref="234" max="-2" attributes="0"/>
                                   </Group>

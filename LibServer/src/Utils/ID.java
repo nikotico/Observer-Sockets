@@ -26,5 +26,6 @@ public enum ID implements Serializable{
     OFERTA,
     RECIOFERTA,
     RESPOFERTA,
+    CANOFERTA,
     START;//inicar partida   ;
 }

@@ -71,6 +71,7 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(id);
+            writerObj.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,6 +80,7 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(iobservable);
+            writerObj.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -87,6 +89,7 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(iobservable);
+            writerObj.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -95,6 +98,7 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(iobserver);
+            writerObj.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -103,6 +107,7 @@ public class ThreadCliente extends Thread{
         //envía la instrucción indicada
         try {
             writerObj.writeObject(object);
+            writerObj.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,6 +115,7 @@ public class ThreadCliente extends Thread{
     public void escribir(String str){
         try {
             writerNormal.writeUTF(str);
+            writerNormal.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,6 +123,7 @@ public class ThreadCliente extends Thread{
     public void escribir(int numero){
         try {
             writerNormal.writeInt(numero);
+            writerNormal.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -124,6 +131,7 @@ public class ThreadCliente extends Thread{
     public void escribir(int [] array){
         try {
             writerObj.writeObject(array);
+            writerObj.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -131,6 +139,7 @@ public class ThreadCliente extends Thread{
     public void escribir(double numero){
         try {
             writerNormal.writeDouble(numero);
+            writerNormal.flush();
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -233,6 +242,9 @@ public class ThreadCliente extends Thread{
                         if (c.getRefPantalla() instanceof JFrameSubastador){
                             ((JFrameSubastador)c.getRefPantalla()).getSubastador().aceptarOferta(oferta,nick,key);
                         }
+                    break;
+                    case RESPOFERTA:
+                        
                     break;
 
                 }

@@ -19,7 +19,7 @@ public class Subasta extends AbstractObservable implements Serializable{
     int precioActual;
     Date inicio;
     Date finalProg;
-    Oferente oferenteGanador;
+    String oferenteActual;
     Status status;
     String subastador;
 
@@ -50,12 +50,8 @@ public class Subasta extends AbstractObservable implements Serializable{
     }
 
         
-    void addOferente (Oferente oferente){
-        Hashoferentes.put(Hashoferentes.size()+1,oferente);
-        this.addObserver(oferente);
-    };
-    void updateOferente (Oferente oferente, float oferta){
-        //Hashoferentes.get(oferente).set
+    void setOferente (String oferente){
+        this.oferenteActual = oferente;
     };
     
     public Date getInicio() {

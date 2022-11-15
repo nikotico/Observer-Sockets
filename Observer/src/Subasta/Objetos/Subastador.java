@@ -39,12 +39,20 @@ public class Subastador extends Usuario{
     public void aceptarOferta (float precio,String oferente, int key){
         int resp = JOptionPane.showConfirmDialog(null, "El oferente "+ oferente +" ha hecho una oferta de $"+ precio +" en la subasta #"+key+"\n"+"¿Quiere aceptar la oferta?","Alerta!", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (resp == 0){
-            //this.getC().hiloCliente.escribir(ID.SETSUBASTA);
-            
+            this.getC().hiloCliente.escribir(ID.RESPOFERTA);
+            this.getC().hiloCliente.escribir(key);
+            try {
+                Subasta subasta = (Subasta)this.getC().hiloCliente.readerObj.readObject(); 
+                this.getC().hiloCliente.escribir(subasta);
+            } catch (IOException ex) {
+                Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
+            }  
         }
         else{
-            //this.getC().hiloCliente.escribir(ID.SETSUBASTA)
-            //
+            this.getC().hiloCliente.escribir(ID.CANOFERTA);
+            this.getC().hiloCliente.escribir(oferente);
         }
     }
     public void cerrarSubasta (){

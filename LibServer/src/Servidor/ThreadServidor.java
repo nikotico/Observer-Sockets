@@ -137,12 +137,27 @@ public class ThreadServidor extends Thread {
                     case OFERTA:
                         int keyO = readerNormal.readInt();
                         String nick = readerNormal.readUTF();
+                        readerNormal.reset();
                         float oferta = readerNormal.readFloat();
                         writerObj.writeObject(ID.OFERTA);
                         writerObj.writeObject(server.getSubasta(keyO));
                         String nickS = readerNormal.readUTF();
                         server.SendOferta(nickS, ID.RECIOFERTA,nick,keyO,oferta);
                     break;
+                    case RESPOFERTA:
+                        key = readerNormal.readInt();
+                        subasta = server.getSubasta(key);
+                        writerObj.writeObject(subasta);
+                        
+                        subasta = (AbstractObservable)readerObj.readObject();
+                        server.setSubasta(key, subasta);
+                        int tope = readerNormal.readInt();
+                        server.enviarMensajeATodos("La subasta #"+key+" tiene nueva nuevo tope de $" + tope);
+                    break;
+                    case CANOFERTA:
+                        nombre = readerNormal.readUTF();
+                        server.SendSpecificMessage(nombre, "Su oferta ha sido rechazada", ID.MESSAGE);
+                    break;                    
                 }
             } catch (IOException ex) { 
                 System.out.println("ERROR EN EL TREADSERVIDOR"); //lo desconecta para que no salga este mensaje infinitas veces
