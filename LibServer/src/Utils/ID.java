@@ -19,7 +19,7 @@ public enum ID implements Serializable{
     SUBASTAR,
     SETSUBASTA,
     MESSAGE,//Mensaje X para mandar a la consola
-    TEST,
+    NOTIF,
     CERRADA,
     VENDIDA,
     CANCELADA,

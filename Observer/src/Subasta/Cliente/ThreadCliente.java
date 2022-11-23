@@ -193,6 +193,18 @@ public class ThreadCliente extends Thread{
                             ((JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
                         }
                     break;
+                    case NOTIF:
+                        mensajeChat = readerNormal.readUTF();
+                        if (c.getRefPantalla() instanceof JFrameSubastador){
+                            ((JFrameSubastador)c.getRefPantalla()).appendASub(mensajeChat);
+                        }
+                        else if (c.getRefPantalla() instanceof JFrameOferente){
+                            ((JFrameOferente)c.getRefPantalla()).notifSub(mensajeChat);
+                        }
+                        else{
+                            ((JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
+                        }
+                    break;
                     case BITACORA:
                         mensajeChat = readerNormal.readUTF();
                         ((JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);

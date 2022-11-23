@@ -10,12 +10,15 @@ import Subasta.Objetos.Producto;
 import Subasta.Objetos.Subasta;
 import Subasta.Objetos.Subastador;
 import Utils.ID;
+import java.awt.Image;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -27,6 +30,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
      * Creates new form JFrameSubastador
      */
     Subastador subastador;
+    String ruta = "";
 
     public Subastador getSubastador() {
         return subastador;
@@ -44,6 +48,9 @@ public class JFrameSubastador extends javax.swing.JFrame {
     }
     public void appendASub(String sub){
         TxtActivas.setText(TxtActivas.getText() + "\n" + sub);
+    }
+    public void notifSub(String sub){
+        TxtNotif.setText(TxtNotif.getText() + "\n" + sub);
     }
     public void addItem(Integer key){
         BoxSubastas.addItem(key.toString());
@@ -65,18 +72,19 @@ public class JFrameSubastador extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         TxtNombre = new javax.swing.JTextField();
         TxtDesc = new javax.swing.JTextField();
-        TxtPInicial = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TxtFinal = new javax.swing.JTextArea();
+        TxtNotif = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         TxtActivas = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
         BoxSubastas = new javax.swing.JComboBox<>();
         BtnCancelar = new javax.swing.JButton();
         BtnCerrar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        BtnImage = new javax.swing.JButton();
         lblNombre = new javax.swing.JLabel();
+        TxtPInicial = new javax.swing.JFormattedTextField();
+        LblImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,13 +103,13 @@ public class JFrameSubastador extends javax.swing.JFrame {
 
         jLabel4.setText("Notificaciones Subastas");
 
-        jLabel5.setText("Subastas Ganadas");
+        jLabel5.setText("Mis notificaciones");
 
         jLabel6.setText("Precio inicial:");
 
-        TxtFinal.setColumns(20);
-        TxtFinal.setRows(5);
-        jScrollPane1.setViewportView(TxtFinal);
+        TxtNotif.setColumns(20);
+        TxtNotif.setRows(5);
+        jScrollPane1.setViewportView(TxtNotif);
 
         TxtActivas.setColumns(20);
         TxtActivas.setRows(5);
@@ -123,9 +131,18 @@ public class JFrameSubastador extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Seleccionar");
+        BtnImage.setText("Seleccionar");
+        BtnImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnImageActionPerformed(evt);
+            }
+        });
 
         lblNombre.setText("Nombre");
+
+        TxtPInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+
+        LblImage.setText("Imagen");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,11 +155,7 @@ public class JFrameSubastador extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel6)
-                                            .addGap(76, 76, 76))
-                                        .addComponent(BtnCrearS, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(BtnCrearS, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,24 +172,29 @@ public class JFrameSubastador extends javax.swing.JFrame {
                                     .addComponent(BoxSubastas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(TxtPInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(83, 83, 83)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(TxtDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                                            .addComponent(TxtNombre))))
-                                .addGap(140, 140, 140)
+                                            .addComponent(TxtDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                                            .addComponent(TxtNombre)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel6)
+                                                .addGap(12, 12, 12)
+                                                .addComponent(TxtPInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel2)
+                                                    .addComponent(jLabel3))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(BtnImage)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(LblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(15, 15, 15))
                     .addGroup(layout.createSequentialGroup()
@@ -193,25 +211,28 @@ public class JFrameSubastador extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(26, 26, 26))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
-                            .addComponent(TxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(LblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel2)
-                                    .addComponent(TxtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jButton1))
-                                .addGap(7, 7, 7)
-                                .addComponent(TxtPInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel4)
+                                    .addComponent(TxtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel2)
+                                            .addComponent(TxtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabel3)
+                                            .addComponent(BtnImage))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(TxtPInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(BtnCrearS))
@@ -236,8 +257,10 @@ public class JFrameSubastador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnCrearSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCrearSActionPerformed
-         //Crea un nuevo producto y una subasta  
-        subastador.createSubasta(TxtNombre.getText(),TxtDesc.getText(),new ImageIcon(), Integer.parseInt(TxtPInicial.getText()),0,new Date());
+         //Crea un nuevo producto y una subasta
+        if ((ruta != "") && (TxtNombre.getText() != "") && (TxtDesc.getText() != "")){
+            subastador.createSubasta(TxtNombre.getText(),TxtDesc.getText(),new ImageIcon(ruta), Integer.parseInt(TxtPInicial.getText()),0,new Date());
+        }
     }//GEN-LAST:event_BtnCrearSActionPerformed
 
     private void BtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCancelarActionPerformed
@@ -265,6 +288,22 @@ public class JFrameSubastador extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Seleccione una opcion!!!");
         }
     }//GEN-LAST:event_BtnCerrarActionPerformed
+
+    private void BtnImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnImageActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filtrado =new FileNameExtensionFilter("JPG, JPEG, PNG & GIF", "jpg","jpeg","png","gif");
+        fileChooser.setFileFilter(filtrado);
+        
+        int respuesta = fileChooser.showOpenDialog(this);
+        if (respuesta == JFileChooser.APPROVE_OPTION){
+            ruta = fileChooser.getSelectedFile().getPath();
+            Image mImagen = new ImageIcon(ruta).getImage();
+            ImageIcon imagen = new ImageIcon(mImagen.getScaledInstance(LblImage.getWidth(), LblImage.getHeight(), mImagen.SCALE_SMOOTH));
+            LblImage.setIcon(imagen);
+        }
+        else if(respuesta == JFileChooser.CANCEL_OPTION){
+        }
+    }//GEN-LAST:event_BtnImageActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,12 +345,13 @@ public class JFrameSubastador extends javax.swing.JFrame {
     private javax.swing.JButton BtnCancelar;
     private javax.swing.JButton BtnCerrar;
     private javax.swing.JButton BtnCrearS;
+    private javax.swing.JButton BtnImage;
+    private javax.swing.JLabel LblImage;
     private javax.swing.JTextArea TxtActivas;
     private javax.swing.JTextField TxtDesc;
-    private javax.swing.JTextArea TxtFinal;
     private javax.swing.JTextField TxtNombre;
-    private javax.swing.JTextField TxtPInicial;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextArea TxtNotif;
+    private javax.swing.JFormattedTextField TxtPInicial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

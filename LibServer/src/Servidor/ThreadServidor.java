@@ -172,12 +172,12 @@ public class ThreadServidor extends Thread {
                         }
                         else{
                             nombre = readerNormal.readUTF();
-                            server.SendSpecificMessage(nombre, "No se pueden realizar mas ofertas a esta subasta", ID.MESSAGE);
+                            server.SendSpecificMessage(nombre, "No se pueden realizar mas ofertas a esta subasta", ID.NOTIF);
                         }
                     break;
                     case CANOFERTA:
                         nombre = readerNormal.readUTF();
-                        server.SendSpecificMessage(nombre, "Su oferta ha sido rechazada", ID.MESSAGE);
+                        server.SendSpecificMessage(nombre, "Su oferta ha sido rechazada", ID.NOTIF);
                     break;
                     case CERRADA:
                         key = readerNormal.readInt();

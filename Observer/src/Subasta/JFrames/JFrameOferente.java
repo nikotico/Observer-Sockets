@@ -68,7 +68,6 @@ public class JFrameOferente extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jSubastas = new javax.swing.JTextArea();
         BoxSubastas = new javax.swing.JComboBox<>();
-        jTPrecio = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -76,6 +75,7 @@ public class JFrameOferente extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         TxNotificaciones = new javax.swing.JTextArea();
         lblNombre = new javax.swing.JLabel();
+        jTPrecio = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,12 +84,6 @@ public class JFrameOferente extends javax.swing.JFrame {
         jSubastas.setColumns(20);
         jSubastas.setRows(5);
         jScrollPane2.setViewportView(jSubastas);
-
-        jTPrecio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTPrecioActionPerformed(evt);
-            }
-        });
 
         jLabel3.setText("Seleccionar Subasta");
 
@@ -109,6 +103,8 @@ public class JFrameOferente extends javax.swing.JFrame {
         jScrollPane3.setViewportView(TxNotificaciones);
 
         lblNombre.setText("Nombre");
+
+        jTPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,7 +130,7 @@ public class JFrameOferente extends javax.swing.JFrame {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel4)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(BtnOfertar, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
@@ -160,8 +156,8 @@ public class JFrameOferente extends javax.swing.JFrame {
                         .addComponent(BoxSubastas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jTPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BtnOfertar))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -170,10 +166,6 @@ public class JFrameOferente extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTPrecioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTPrecioActionPerformed
 
     private void BtnOfertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnOfertarActionPerformed
         if (!jTPrecio.getText().isEmpty()){
@@ -232,7 +224,7 @@ public class JFrameOferente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jSubastas;
-    private javax.swing.JTextField jTPrecio;
+    private javax.swing.JFormattedTextField jTPrecio;
     private javax.swing.JLabel lblNombre;
     // End of variables declaration//GEN-END:variables
 }
