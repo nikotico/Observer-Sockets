@@ -38,7 +38,6 @@ public class JFrameOferente extends javax.swing.JFrame {
         jSubastas.setText(TxNotificaciones.getText() + "\n" + sub);
     }
     public void appendASub(String sub,int key){
-        //Integer.parseInt((String)BoxSubastas.getSelectedItem())
         jSubastas.setText(jSubastas.getText()+
                 sub+
                 oferente.getSubasta(key).getProducto().getPrecioIni()
@@ -85,6 +84,12 @@ public class JFrameOferente extends javax.swing.JFrame {
         jSubastas.setRows(5);
         jScrollPane2.setViewportView(jSubastas);
 
+        BoxSubastas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BoxSubastasActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Seleccionar Subasta");
 
         jLabel4.setText("Coloque cantidad");
@@ -104,7 +109,7 @@ public class JFrameOferente extends javax.swing.JFrame {
 
         lblNombre.setText("Nombre");
 
-        jTPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
+        jTPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,6 +182,10 @@ public class JFrameOferente extends javax.swing.JFrame {
         }
             
     }//GEN-LAST:event_BtnOfertarActionPerformed
+
+    private void BoxSubastasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxSubastasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BoxSubastasActionPerformed
 
     /**
      * @param args the command line arguments

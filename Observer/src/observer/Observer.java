@@ -15,7 +15,6 @@ public class Observer {
 
 
     public static void main(String[] args) {
-        SubastasManager manager = new SubastasManager();
         Servidor srv = new Servidor();
         srv.runServer();
     }

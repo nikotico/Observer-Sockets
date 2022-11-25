@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package RedSocialVIP;
-
 import RedSocialVIP.JFrames.JFrameIniciarSesion;
 
 /**
@@ -20,12 +19,11 @@ public class MainRed {
             RedSocialVIP.Cliente.Cliente c = new RedSocialVIP.Cliente.Cliente();
             
             //Muestra la pantalla de iniciar seccion
-            JFrameIniciarSesion pJ = new JFrameIniciarSesion();
+            JFrameIniciarSesion pJ = new JFrameIniciarSesion(c);
             pJ.setVisible(true);
             
             //Coloca la ref a la pantalla en el cliente y lo conecta
             c.setPantalla(pJ);
             c.conectar();
     }
-    
 }

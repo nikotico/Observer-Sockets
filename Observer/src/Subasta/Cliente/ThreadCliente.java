@@ -287,9 +287,6 @@ public class ThreadCliente extends Thread{
                             Logger.getLogger(Subastador.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     break;
-                    case RESPOFERTA:
-                        
-                    break;
 
                 }
             } catch (IOException ex) { 

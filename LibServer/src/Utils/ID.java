@@ -12,9 +12,11 @@ public enum ID implements Serializable{
     CHAT,
     ADMIN,
     DENEGARACCION, //muestra mensaje de error
+    PUBLICAR,
     FOLLOW,
     LIKES,
     DISLIKES,
+    BAJA,
     SUBASTA,
     SUBASTAR,
     SETSUBASTA,
@@ -28,5 +30,7 @@ public enum ID implements Serializable{
     RESPOFERTA,
     CANOFERTA,
     GETNICKS,
+    SETARTISTA,
+    GETARTISTA,
     START;//inicar partida   ;
 }

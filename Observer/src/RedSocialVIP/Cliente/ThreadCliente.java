@@ -8,10 +8,10 @@ package RedSocialVIP.Cliente;
 import Subasta.Cliente.*;
 import Utils.ID;
 import Interface.MainInterface;
-import Subasta.JFrames.JFrameIniciarSesion;
-import Subasta.JFrames.JFrameOferente;
-import Subasta.JFrames.JFrameSubastador;
-import Subasta.Objetos.Subasta;
+import RedSocialVIP.JFrames.JFrameFan;
+import RedSocialVIP.JFrames.JFrameIniciarSesion;
+import RedSocialVIP.Objetos.Artista;
+import RedSocialVIP.Objetos.Publicacion;
 import Utils.AbstractObservable;
 import Utils.IObservable;
 import Utils.IObserver;
@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -32,7 +35,7 @@ public class ThreadCliente extends Thread{
     private Socket socketRef;
     public ObjectInputStream readerObj;
     public ObjectOutputStream writerObj;
-    private DataInputStream readerNormal;
+    public DataInputStream readerNormal;
     public DataOutputStream writerNormal;
     
     //Ref al cliente
@@ -69,6 +72,7 @@ public class ThreadCliente extends Thread{
     public void escribir(ID id){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(id);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,6 +81,7 @@ public class ThreadCliente extends Thread{
     public void escribir(AbstractObservable iobservable){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(iobservable);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,6 +90,7 @@ public class ThreadCliente extends Thread{
     public void escribir(IObservable iobservable){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(iobservable);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,6 +99,7 @@ public class ThreadCliente extends Thread{
     public void escribir(IObserver iobserver){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(iobserver);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,6 +108,7 @@ public class ThreadCliente extends Thread{
     public void escribir(Object object){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(object);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,6 +116,7 @@ public class ThreadCliente extends Thread{
     }
     public void escribir(String str){
         try {
+            writerNormal.flush();
             writerNormal.writeUTF(str);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -115,6 +124,7 @@ public class ThreadCliente extends Thread{
     }
     public void escribir(int numero){
         try {
+            writerNormal.flush();
             writerNormal.writeInt(numero);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,6 +132,7 @@ public class ThreadCliente extends Thread{
     }
     public void escribir(int [] array){
         try {
+            writerObj.reset();
             writerObj.writeObject(array);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -129,7 +140,16 @@ public class ThreadCliente extends Thread{
     }
     public void escribir(double numero){
         try {
+            writerNormal.flush();
             writerNormal.writeDouble(numero);
+        } catch (IOException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void escribir(boolean bin){
+        try {
+            writerNormal.flush();
+            writerNormal.writeBoolean(bin);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -138,20 +158,31 @@ public class ThreadCliente extends Thread{
     
     private void denegarConexion(){
         //Muestra el mensaje
-        JOptionPane.showMessageDialog(null, "Ya comenzó la partida o está llena.");
+        JOptionPane.showMessageDialog(null, "Error al entrar");
         refPantalla.setVisible(false);
         //Desconecta al jugador
         running = false;
         System.out.println("SE DESCONECTÓ");
     }
+    private int getObject(String name, ArrayList<Artista> artistas){
+        for (int i=0;i<artistas.size();i++) {
+            if (artistas.get(i).getNick() == name){
+                return i;
+            }
+        }
+        return 0;
+    }
     
     private void iniciarConexion() throws IOException, ClassNotFoundException{
-        ( (JFrameIniciarSesion)refPantalla).appendConsola("Ingrese un nombre : Name- Tu nombre.");
     }
 
     public void run (){
         ID id;
-        String mensajeChat = null;
+        String mensajeChat = "";
+        String nombre = "";
+        ArrayList<Artista> artistas;
+        ArrayList<Publicacion> ListaPublicaciones;
+        int n;
         while (running){
             try {
                 id = (ID) readerObj.readObject(); // esperar hasta que reciba un entero
@@ -163,43 +194,32 @@ public class ThreadCliente extends Thread{
                         iniciarConexion();
                     break;
                     case DENEGARACCION:
-                        ( (JFrameIniciarSesion)refPantalla).appendConsola("No se pudo realizar la acción.");
+                        JOptionPane.showMessageDialog(null, "No se pudo realizar la accion!!!");
                     break;
                     case MESSAGE:
                         mensajeChat = readerNormal.readUTF();
-                        ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
+                        JOptionPane.showMessageDialog(null, mensajeChat);
                     break;
                     case BITACORA:
                         mensajeChat = readerNormal.readUTF();
-                        ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
+                        JOptionPane.showMessageDialog(null, mensajeChat);
                     break;
                     case CHAT:
                         mensajeChat = readerNormal.readUTF();
-                        ( (JFrameIniciarSesion)refPantalla).appendConsola(mensajeChat);
+                        JOptionPane.showMessageDialog(null, mensajeChat);
                     break;
-                    case SETSUBASTA:
-                        Integer key = readerNormal.readInt();
-                        Subasta subasta = (Subasta)readerObj.readObject();
-                        if (c.getRefPantalla() instanceof JFrameSubastador){
-                            ((JFrameSubastador)c.getRefPantalla()).getSubastador().addSubasta(key, subasta);
-                            ((JFrameSubastador)c.getRefPantalla()).addItem(key);
-                            ((JFrameSubastador)c.getRefPantalla()).appendASub("Subasta #"+key);
-                        }
-                        else{
-                            System.out.print("sjdkjash");
-                        }
-
-                    break;
-                    case SUBASTA:
-                        key = readerNormal.readInt();
-                        subasta = (Subasta)readerObj.readObject();
-                        if (c.getRefPantalla() instanceof JFrameOferente){
-                            ((JFrameOferente)c.getRefPantalla()).getOferente().addSubasta(key, subasta);
-                            ((JFrameOferente)c.getRefPantalla()).addItem(key);
-                            ((JFrameOferente)c.getRefPantalla()).appendASub("Subasta #"+key+" Con un precio inicial de ",key);
+                    case GETARTISTA:
+                        artistas = (ArrayList<Artista>) c.hiloCliente.readerObj.readObject();
+                        
+                        if (!artistas.isEmpty()){
+                            ((JFrameFan)c.getRefPantalla()).addArtistas(artistas);
                         }
                     break;
-
+                    case PUBLICAR:
+                        if (c.getRefPantalla() instanceof JFrameFan){
+                            c.hiloCliente.escribir(ID.GETARTISTA);
+                        }
+                    break;
                 }
             } catch (IOException ex) { 
                 System.out.println("ERROR THREAD CLIENTE");  //lo desconecta para que no salga este mensaje infinitas veces

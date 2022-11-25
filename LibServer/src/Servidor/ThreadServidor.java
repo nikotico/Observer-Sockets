@@ -4,6 +4,7 @@ package Servidor;
 import Utils.ID;
 import Cliente.ThreadCliente;
 import Utils.AbstractObservable;
+import Utils.AbstractObserver;
 import Utils.IObservable;
 import Utils.IObserver;
 import java.io.DataInputStream;
@@ -11,16 +12,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ThreadServidor extends Thread {
     //Traspaso de datos
     private Socket socketRef;
-    private ObjectInputStream readerObj;
+    public ObjectInputStream readerObj;
     public ObjectOutputStream writerObj;
-    private DataInputStream readerNormal;
+    public DataInputStream readerNormal;
     public DataOutputStream writerNormal;
     //Funcionamiento del hilo
     private boolean running = true;
@@ -41,6 +46,7 @@ public class ThreadServidor extends Thread {
     public void escribir(ID id){
         try {
             //envía la instrucción indicada
+            writerObj.reset();
             writerObj.writeObject(id);
         } catch (IOException ex) {
             Logger.getLogger(ThreadServidor.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,6 +55,7 @@ public class ThreadServidor extends Thread {
     public void escribir(IObservable iobservable){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(iobservable);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,6 +64,7 @@ public class ThreadServidor extends Thread {
     public void escribir(IObserver iobserver){
         //envía la instrucción indicada
         try {
+            writerObj.reset();
             writerObj.writeObject(iobserver);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,6 +79,7 @@ public class ThreadServidor extends Thread {
     }
     public void escribir(int numero){
         try {
+            writerNormal.flush();
             writerNormal.writeInt(numero);
         } catch (IOException ex) {
             Logger.getLogger(ThreadServidor.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,6 +87,7 @@ public class ThreadServidor extends Thread {
     }   
     public void escribir(int [] array){
         try {
+            writerObj.reset();
             writerObj.writeObject(array);
         } catch (IOException ex) {
             Logger.getLogger(ThreadServidor.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,6 +95,7 @@ public class ThreadServidor extends Thread {
     }  
     public void escribir(double numero){
         try {
+            writerNormal.flush();
             writerNormal.writeDouble(numero);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -92,6 +103,7 @@ public class ThreadServidor extends Thread {
     }
     public void escribir(float numero){
         try {
+            writerNormal.flush();
             writerNormal.writeFloat(numero);
         } catch (IOException ex) {
             Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,6 +121,7 @@ public class ThreadServidor extends Thread {
         String nombre = "";
         AbstractObservable subasta = null;
         Boolean op = null;
+        AbstractObserver ob = null;
         while (running){
             try {
                 id = (ID)readerObj.readObject(); // esperar hasta que reciba un entero
@@ -190,13 +203,43 @@ public class ThreadServidor extends Thread {
                         if (op){
                             nombre = readerNormal.readUTF();
                             server.enviarMensajeATodos("La subasta #" + key + " ha cerrado");
-                            server.SendSpecificMessage(nombre, "Felicitaciones ha ganado la subasta#"+ key +"!!!", ID.MESSAGE);
+                            server.SendSpecificMessage(nombre, "Felicitaciones ha ganado la subasta#"+ key +"!!!", ID.NOTIF);
                         }
                         else{
                             server.enviarMensajeATodos("La subasta #" + key + " ha cerrado sin ganador");
                         }
+                    break;
+                    case SETARTISTA:
+                        op = readerNormal.readBoolean();
+                        if (op){
+                            ob = ((AbstractObserver)readerObj.readObject());
+                            server.AddArtista(ob);
+                        }
+                        else{
+                            ob = (AbstractObserver)readerObj.readObject();
+                            //artistas.remove(ob);
+                        }
+                    break;
+                    case GETARTISTA:
+                        escribir(ID.GETARTISTA);
+                        writerObj.reset();
+                        writerObj.writeObject(server.getArtistas());
+                    break;
+                    case PUBLICAR:
+                        ob = (AbstractObserver)readerObj.readObject();
+                        nombre = readerNormal.readUTF();
+                        server.updateArtista(ob, nombre);
+                        server.publicarTodos(ID.PUBLICAR);
+                    break;
+                    case BAJA:
+                        ob = (AbstractObserver)readerObj.readObject();
+                        nombre = readerNormal.readUTF();
+                        server.updateArtista(ob, nombre);
+                    break;
+                    case LIKES:
                         
-                        
+                    break;
+                    case DISLIKES:
                         
                     break;
                 }

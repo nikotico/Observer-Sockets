@@ -4,9 +4,11 @@
  */
 package RedSocialVIP.JFrames;
 
+import RedSocialVIP.Objetos.Artista;
 import Subasta.JFrames.*;
 import Subasta.Objetos.Producto;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,10 +19,21 @@ public class JFrameArtista extends javax.swing.JFrame {
     /**
      * Creates new form JFrameSubastador
      */
+    Artista artista;
+
+    public Artista getArtista() {
+        return artista;
+    }
+
+    public void setArtista(Artista artista) {
+        this.artista = artista;
+    }
     public JFrameArtista() {
         initComponents();
     }
-
+    public void setNombre(String nombre){
+        this.lblNombre.setText(nombre);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +46,7 @@ public class JFrameArtista extends javax.swing.JFrame {
         BtnPublicar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         TxtPublicacion = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        DarmeDeBaja = new javax.swing.JButton();
         BtnFollowers = new javax.swing.JButton();
         BtnAddFollow = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -45,6 +58,7 @@ public class JFrameArtista extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         CambiarLikesyD = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,7 +71,12 @@ public class JFrameArtista extends javax.swing.JFrame {
 
         jLabel1.setText("Escribir publicacion");
 
-        jButton1.setText("Darse de baja");
+        DarmeDeBaja.setText("Darse de baja");
+        DarmeDeBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DarmeDeBajaActionPerformed(evt);
+            }
+        });
 
         BtnFollowers.setText("Ver Followers");
 
@@ -65,17 +84,17 @@ public class JFrameArtista extends javax.swing.JFrame {
 
         jLabel2.setText("Seguidores: 0");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel4.setText("Mis Publicaciones");
 
         jScrollPane1.setViewportView(jTextPane1);
 
         jLabel5.setText("Likes: 0");
 
-        CambiarLikesyD.setText("Cambiar Likes y Dislieks");
+        CambiarLikesyD.setText("Cambiar Likes y Dislikes");
 
         jLabel6.setText("Dislikes: 0");
+
+        lblNombre.setText("Nombre");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -87,14 +106,25 @@ public class JFrameArtista extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(BtnPublicar)
-                            .addComponent(jButton1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(BtnPublicar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(DarmeDeBaja)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BtnFollowers))
-                    .addComponent(TxtPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnAddFollow))
-                .addGap(54, 54, 54)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblNombre))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(TxtPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(BtnAddFollow)))
+                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,8 +142,8 @@ public class JFrameArtista extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addComponent(CambiarLikesyD))
                             .addComponent(jLabel5)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -135,7 +165,7 @@ public class JFrameArtista extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
+                            .addComponent(DarmeDeBaja)
                             .addComponent(BtnFollowers)
                             .addComponent(jLabel3))
                         .addGap(32, 32, 32)
@@ -145,18 +175,29 @@ public class JFrameArtista extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblNombre))
+                .addGap(25, 25, 25)
                 .addComponent(CambiarLikesyD)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPublicarActionPerformed
-        
+        if (!TxtPublicacion.getText().isBlank()){
+            artista.postearMensaje(TxtPublicacion.getText());
+        }
+        else{
+           JOptionPane.showMessageDialog(null, "No se puede hacer una publicacion en blanco!!"); 
+        }
     }//GEN-LAST:event_BtnPublicarActionPerformed
+
+    private void DarmeDeBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DarmeDeBajaActionPerformed
+        artista.darseDeBaja();
+    }//GEN-LAST:event_DarmeDeBajaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,8 +240,8 @@ public class JFrameArtista extends javax.swing.JFrame {
     private javax.swing.JButton BtnFollowers;
     private javax.swing.JButton BtnPublicar;
     private javax.swing.JButton CambiarLikesyD;
+    private javax.swing.JButton DarmeDeBaja;
     private javax.swing.JTextField TxtPublicacion;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -210,5 +251,6 @@ public class JFrameArtista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JLabel lblNombre;
     // End of variables declaration//GEN-END:variables
 }

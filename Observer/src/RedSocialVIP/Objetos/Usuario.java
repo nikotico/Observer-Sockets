@@ -4,21 +4,29 @@
  */
 package RedSocialVIP.Objetos;
 
-import Subasta.Objetos.*;
+
+import RedSocialVIP.Cliente.Cliente;
+import Utils.AbstractObserver;
+
 
 /**
  *
  * @author oscfr
  */
-public class Usuario {
-    String nick;
-
-    public String getNick() {
-        return nick;
-    }
-
-    public void setNick(String nick) {
-        this.nick = nick;
+public class Usuario extends AbstractObserver{
+    private Cliente c;
+    public String nick;
+    
+    public Cliente getC() {
+        return c;
     }
     
+    public void setC(Cliente c) {
+        this.c = c;
+    }
+
+    @Override
+    public void notifyObserver(String string, Object o) {
+        
+    }   
 }

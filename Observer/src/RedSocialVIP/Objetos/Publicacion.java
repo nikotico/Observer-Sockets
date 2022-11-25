@@ -4,11 +4,14 @@
  */
 package RedSocialVIP.Objetos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author oscfr
  */
-public class Publicacion {
+public class Publicacion implements Serializable{
+    int key;
     String contenido;
     int likes;
     int dislikes;
@@ -22,16 +25,31 @@ public class Publicacion {
     public int getLikes() {
         return likes;
     }
-
+    
     public void setLikes(int likes) {
         this.likes = likes;
     }
 
+    public void addLikes() {
+        this.likes = this.likes++;
+    }
+    
     public int getDislikes() {
         return dislikes;
     }
 
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
+    }
+    public void addDisikes() {
+        this.dislikes = this.dislikes++;
+    }
+
+    public String getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
     }
 }

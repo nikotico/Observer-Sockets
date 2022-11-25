@@ -4,7 +4,12 @@
  */
 package RedSocialVIP.JFrames;
 
+import RedSocialVIP.Objetos.Artista;
+import RedSocialVIP.Objetos.Fan;
 import Subasta.JFrames.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -15,10 +20,45 @@ public class JFrameFan extends javax.swing.JFrame {
     /**
      * Creates new form JFrameOferente
      */
+    Fan fan;
+    ArrayList<Artista> ListaArtistas;
+    
+    public void addArtistas(ArrayList<Artista> artistas){
+        BoxArtista.removeAllItems();
+        ListaArtistas = artistas;
+        for (int i=0;i<artistas.size();i++) {
+            addArtista(artistas.get(i).getNick());
+        }
+    }
+    public void addMensajes(int key){
+        BoxPublicacion.removeAllItems();
+        for (int i=0;i<ListaArtistas.get(key).getListaPublicaciones().size();i++) {
+            addMensaje(i+"");
+        }
+    }
+    public int getArtista(String selected){
+        for (int i=0;i<ListaArtistas.size();i++) {
+            if (ListaArtistas.get(i).getNick() == selected){
+                return i;
+            }
+        }
+        return 0;
+    }
+    public void addArtista(String nombre){
+        BoxArtista.addItem(nombre);
+    }
+    public void addMensaje(String mensaje){
+        BoxPublicacion.addItem(mensaje);
+    }
+    public void setFan(Fan fan) {
+        this.fan = fan;
+    }
     public JFrameFan() {
         initComponents();
     }
-
+    public void setNombre(String nombre){
+        this.lblNombre.setText(nombre);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,12 +74,17 @@ public class JFrameFan extends javax.swing.JFrame {
         jTMensajes = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTNotificaciones = new javax.swing.JTextArea();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        BoxPublicacion = new javax.swing.JComboBox<>();
         BtnLike = new javax.swing.JButton();
         BtnLike1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        ToggleSeguir = new javax.swing.JToggleButton();
+        BoxArtista = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        BtnSeguir = new javax.swing.JButton();
+        LblLikes = new javax.swing.JLabel();
+        LblDislikes = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,17 +100,88 @@ public class JFrameFan extends javax.swing.JFrame {
         jTNotificaciones.setRows(5);
         jScrollPane2.setViewportView(jTNotificaciones);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        BoxPublicacion.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                BoxPublicacionItemStateChanged(evt);
+            }
+        });
+        BoxPublicacion.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                BoxPublicacionPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        BoxPublicacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BoxPublicacionMouseClicked(evt);
+            }
+        });
+        BoxPublicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BoxPublicacionActionPerformed(evt);
+            }
+        });
 
         BtnLike.setText("Like");
+        BtnLike.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLikeActionPerformed(evt);
+            }
+        });
 
         BtnLike1.setText("Dislike");
+        BtnLike1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnLike1ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Artista seleccionado");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        BoxArtista.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                BoxArtistaItemStateChanged(evt);
+            }
+        });
+        BoxArtista.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                BoxArtistaPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        BoxArtista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                BoxArtistaMouseClicked(evt);
+            }
+        });
+        BoxArtista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BoxArtistaActionPerformed(evt);
+            }
+        });
 
-        ToggleSeguir.setText("Seguir");
+        jLabel3.setText("Likes:");
+
+        jLabel4.setText("Dislikes:");
+
+        lblNombre.setText("Nombre:");
+
+        BtnSeguir.setText("Seguir");
+        BtnSeguir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSeguirActionPerformed(evt);
+            }
+        });
+
+        LblLikes.setText("0");
+
+        LblDislikes.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,34 +191,47 @@ public class JFrameFan extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombre))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)
-                        .addGap(60, 60, 60))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(69, 69, 69)
+                        .addGap(0, 63, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(74, 74, 74)
+                                .addComponent(jLabel6)
+                                .addGap(128, 128, 128))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(BoxArtista, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(68, 68, 68))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LblLikes, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LblDislikes, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(BtnLike)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(BtnLike1))))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(ToggleSeguir)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(BoxPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addGap(60, 60, 60))))))
-                .addGap(62, 62, 62))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(13, 13, 13)
+                                            .addComponent(BtnSeguir)))
+                                    .addGap(54, 54, 54)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BtnLike)
+                                .addGap(90, 90, 90)
+                                .addComponent(BtnLike1)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,30 +239,97 @@ public class JFrameFan extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ToggleSeguir))
-                .addGap(7, 7, 7)
+                .addComponent(BoxArtista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(BtnSeguir)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BoxPublicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(LblLikes)
+                    .addComponent(LblDislikes))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnLike)
                     .addComponent(BtnLike1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 136, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addComponent(lblNombre)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BoxArtistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxArtistaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_BoxArtistaActionPerformed
+
+    private void BoxPublicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BoxPublicacionActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_BoxPublicacionActionPerformed
+
+    private void BoxArtistaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BoxArtistaItemStateChanged
+        
+    }//GEN-LAST:event_BoxArtistaItemStateChanged
+
+    private void BoxPublicacionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_BoxPublicacionItemStateChanged
+        
+    }//GEN-LAST:event_BoxPublicacionItemStateChanged
+
+    private void BoxArtistaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BoxArtistaMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_BoxArtistaMouseClicked
+
+    private void BoxPublicacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BoxPublicacionMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_BoxPublicacionMouseClicked
+
+    private void BoxArtistaPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_BoxArtistaPopupMenuWillBecomeInvisible
+        if (fan.getListaArtistas().contains(BoxArtista.getSelectedItem().toString())){
+           addMensajes(getArtista(BoxArtista.getSelectedItem().toString())); 
+        }
+        else{
+            jTMensajes.setText("No sigues a este artista");
+        }
+    }//GEN-LAST:event_BoxArtistaPopupMenuWillBecomeInvisible
+
+    private void BoxPublicacionPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_BoxPublicacionPopupMenuWillBecomeInvisible
+        if (fan.getListaArtistas().contains(BoxArtista.getSelectedItem().toString())){
+            String texto = ListaArtistas.get(getArtista(BoxArtista.getSelectedItem().toString())).getListaPublicaciones().get(Integer.parseInt(BoxPublicacion.getSelectedItem().toString())).getContenido();
+            jTMensajes.setText(texto);
+        }
+    }//GEN-LAST:event_BoxPublicacionPopupMenuWillBecomeInvisible
+
+    private void BtnLikeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLikeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLikeActionPerformed
+
+    private void BtnLike1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLike1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnLike1ActionPerformed
+
+    private void BtnSeguirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSeguirActionPerformed
+        if (!fan.getListaArtistas().contains(BoxArtista.getSelectedItem().toString())){
+            fan.addListaArtistas(BoxArtista.getSelectedItem().toString());
+            
+        }
+    }//GEN-LAST:event_BtnSeguirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -174,17 +370,22 @@ public class JFrameFan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> BoxArtista;
+    private javax.swing.JComboBox<String> BoxPublicacion;
     private javax.swing.JButton BtnLike;
     private javax.swing.JButton BtnLike1;
-    private javax.swing.JToggleButton ToggleSeguir;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JButton BtnSeguir;
+    private javax.swing.JLabel LblDislikes;
+    private javax.swing.JLabel LblLikes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTMensajes;
     private javax.swing.JTextArea jTNotificaciones;
+    private javax.swing.JLabel lblNombre;
     // End of variables declaration//GEN-END:variables
 }
