@@ -17,6 +17,7 @@ public enum ID implements Serializable{
     LIKES,
     DISLIKES,
     BAJA,
+    NOTIF10,
     SUBASTA,
     SUBASTAR,
     SETSUBASTA,

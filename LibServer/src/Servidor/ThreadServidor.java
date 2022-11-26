@@ -72,6 +72,7 @@ public class ThreadServidor extends Thread {
     }         
     public void escribir(String str){
         try {
+            writerNormal.flush();
             writerNormal.writeUTF(str);
         } catch (IOException ex) {
             Logger.getLogger(ThreadServidor.class.getName()).log(Level.SEVERE, null, ex);
@@ -229,7 +230,7 @@ public class ThreadServidor extends Thread {
                         ob = (AbstractObserver)readerObj.readObject();
                         nombre = readerNormal.readUTF();
                         server.updateArtista(ob, nombre);
-                        server.publicarTodos(ID.PUBLICAR);
+                        server.publicarTodos(ID.PUBLICAR, nombre, ob);
                     break;
                     case BAJA:
                         ob = (AbstractObserver)readerObj.readObject();
@@ -237,10 +238,15 @@ public class ThreadServidor extends Thread {
                         server.updateArtista(ob, nombre);
                     break;
                     case LIKES:
-                        
+                        ob = (AbstractObserver)readerObj.readObject();
+                        nombre = readerNormal.readUTF();
+                        server.updateArtista(ob, nombre);
+                        server.publicarTodos(ID.PUBLICAR, nombre , ob);
                     break;
-                    case DISLIKES:
-                        
+                    case NOTIF10:
+                        mensajeChat = readerNormal.readUTF();
+                        nombre = readerNormal.readUTF();
+                        server.notif10(ID.NOTIF10, nombre, mensajeChat);
                     break;
                 }
             } catch (IOException ex) { 

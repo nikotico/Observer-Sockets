@@ -8,6 +8,7 @@ package RedSocialVIP.Cliente;
 import Subasta.Cliente.*;
 import Utils.ID;
 import Interface.MainInterface;
+import RedSocialVIP.JFrames.JFrameArtista;
 import RedSocialVIP.JFrames.JFrameFan;
 import RedSocialVIP.JFrames.JFrameIniciarSesion;
 import RedSocialVIP.Objetos.Artista;
@@ -180,6 +181,7 @@ public class ThreadCliente extends Thread{
         ID id;
         String mensajeChat = "";
         String nombre = "";
+        Artista artista;
         ArrayList<Artista> artistas;
         ArrayList<Publicacion> ListaPublicaciones;
         int n;
@@ -210,14 +212,28 @@ public class ThreadCliente extends Thread{
                     break;
                     case GETARTISTA:
                         artistas = (ArrayList<Artista>) c.hiloCliente.readerObj.readObject();
-                        
                         if (!artistas.isEmpty()){
                             ((JFrameFan)c.getRefPantalla()).addArtistas(artistas);
                         }
                     break;
                     case PUBLICAR:
+                        nombre = readerNormal.readUTF();
+                        artista = (Artista)readerObj.readObject();
                         if (c.getRefPantalla() instanceof JFrameFan){
                             c.hiloCliente.escribir(ID.GETARTISTA);
+                        }
+                        else if(c.getRefPantalla() instanceof JFrameArtista && ((JFrameArtista)c.getRefPantalla()).getArtista().getNick().equals(nombre)){
+                            ((JFrameArtista)c.getRefPantalla()).updateArtista(nombre, artista);
+                        }
+                    break;
+                    case NOTIF10:
+                        nombre = readerNormal.readUTF();
+                        mensajeChat = readerNormal.readUTF();
+                        if (c.getRefPantalla() instanceof JFrameFan){
+                            ((JFrameFan)c.getRefPantalla()).addNotif(nombre,mensajeChat);
+                        }
+                        if (c.getRefPantalla() instanceof JFrameArtista){
+                            
                         }
                     break;
                 }

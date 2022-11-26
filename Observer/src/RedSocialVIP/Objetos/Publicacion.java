@@ -31,7 +31,7 @@ public class Publicacion implements Serializable{
     }
 
     public void addLikes() {
-        this.likes = this.likes++;
+        this.likes++;
     }
     
     public int getDislikes() {
@@ -41,9 +41,10 @@ public class Publicacion implements Serializable{
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
     }
-    public void addDisikes() {
-        this.dislikes = this.dislikes++;
+    public void addDislikes() {
+        this.dislikes++;
     }
+    
 
     public String getContenido() {
         return contenido;

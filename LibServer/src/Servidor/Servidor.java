@@ -95,10 +95,18 @@ public class Servidor {
                 conexiones.get(i).escribir(this.subastas.get(CantSubast));
         }
     }
-    public void publicarTodos(ID id){
+    public void publicarTodos(ID id,String  nombre ,AbstractObserver ob){
         for (int i = 0; i < conexiones.size(); i++) {
             conexiones.get(i).escribir(id);
-
+            conexiones.get(i).escribir(nombre);
+            conexiones.get(i).escribir(ob);
+        }
+    }
+    public void notif10(ID id, String nombre, String mensaje){
+        for (int i = 0; i < conexiones.size(); i++) {
+            conexiones.get(i).escribir(id);
+            conexiones.get(i).escribir(nombre);
+            conexiones.get(i).escribir(mensaje);
         }
     }
     public void SendOferta(String user, ID id, String nick, int key, float oferta){

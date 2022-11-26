@@ -8,6 +8,7 @@ import RedSocialVIP.Cliente.Cliente;
 import Utils.ID;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,7 +25,7 @@ public class Artista extends Usuario implements Serializable{
         this.nick = nick;
         this.setC(c);
         this.activo = true;
-        this.seguidores = 12;
+        this.seguidores = 0;
         ListaSeguidores = new ArrayList<Fan>();
         ListaPublicaciones = new ArrayList<Publicacion>();
     }
@@ -48,7 +49,13 @@ public class Artista extends Usuario implements Serializable{
     public void setSeguidores(int seguidores) {
         this.seguidores = seguidores;
     }
-
+    
+    public void sendLikesandDislikes(String name, Artista artista){
+        this.getC().hiloCliente.escribir(ID.LIKES);
+        this.getC().hiloCliente.escribir(artista);
+        this.getC().hiloCliente.escribir(name);
+    }
+    
     public Boolean getActivo() {
         return activo;
     }
@@ -64,7 +71,11 @@ public class Artista extends Usuario implements Serializable{
     public void setListaPublicaciones(ArrayList<Publicacion> ListaPublicaciones) {
         this.ListaPublicaciones = ListaPublicaciones;
     }
-
+    public void notif10(String mensaje, String artista){
+        this.getC().hiloCliente.escribir(ID.NOTIF10);
+        this.getC().hiloCliente.escribir(mensaje);
+        this.getC().hiloCliente.escribir(artista);
+    }
     public ArrayList<Fan> getListaSeguidores() {
         return ListaSeguidores;
     }
@@ -80,12 +91,20 @@ public class Artista extends Usuario implements Serializable{
             this.getC().hiloCliente.escribir(this);
             this.getC().hiloCliente.escribir(this.getNick());
         }
-        
-        
+        else{
+            JOptionPane.showMessageDialog(null, "Si se dio de baja ya no puede publicar!!");
+        }
     }
     public void anadirSeguidor (Fan seguidor){
         ListaSeguidores.add(seguidor);
         seguidores++;
+    }
+    public void anadirSeguidor (){
+        ListaSeguidores.add(new Fan("Bot",new Cliente()));
+        seguidores++;
+        this.getC().hiloCliente.escribir(ID.PUBLICAR);
+        this.getC().hiloCliente.escribir(this);
+        this.getC().hiloCliente.escribir(this.getNick());
     }
     
     public void anadirPublicacion (Publicacion publi){
@@ -96,7 +115,6 @@ public class Artista extends Usuario implements Serializable{
         this.getC().hiloCliente.escribir(ID.BAJA);
         this.getC().hiloCliente.escribir(this);
         this.getC().hiloCliente.escribir(this.getNick());
-        System.out.println(this.activo);
     }
     void notificarSeguidores(String notificacion){}
     
